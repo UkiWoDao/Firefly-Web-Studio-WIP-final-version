@@ -1,0 +1,324 @@
+/* TODO: naci ko je pravio fotografije i komentovati kod svake slike */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    font-family: Helvetica, 'Arimo';
+    font-weight: 700;
+}
+
+h1, h2 {
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+i {
+    cursor: pointer;
+}
+
+/* color palette
+#024F5B;
+#013440;
+#D6DE23;
+#FF635F;
+#F2F2F4;
+*/
+
+
+/*********** ASIDE LEFT *************/
+
+.aside-left {
+    position: relative;
+}
+
+.center-soc {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    writing-mode: tb-rl;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+    font-size: 1.4rem;
+}
+
+#rotated-contact {
+    display: inline-block;
+    white-space: nowrap;
+    transform: rotate(180deg);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    z-index: 5;
+}
+
+.fixed-column {
+    position: fixed;
+}
+
+.firefly-header h1{
+    color: #013440;
+    font-size: 3.5rem;
+    text-transform: capitalize;
+    position: fixed;
+    left: 8%;
+    padding: 32px 0 15vh 0;
+}
+
+/************** ASIDE RIGHT **************/
+
+.aside-right {
+    position: relative;
+    display: inline-block;
+}
+
+.sidebar {
+    position: fixed;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+.sidebar li {
+    padding-top: 20px;
+    color: #013440;
+    cursor: pointer;
+}
+
+.hamburger {
+    right: 7%;
+    top: 32px;
+    display: block;
+    position: fixed;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.hamburger div{
+    width: 35px;
+    height: 5px;
+    background-color: #013440;
+    margin: 6px 0;
+}
+
+
+/*********************************/
+/********* SPLIT LAYOUT **********/
+/*********************************/
+
+.empty-header {
+    display: flex;
+    height: 25vh;
+}
+
+.column.middle {
+    width: 84%;
+    display: flex;
+}
+
+.column {
+    float: left;
+    height: 60vh;
+}
+
+.column.aside-left, .column.aside-right {
+    width: 8%;
+}
+
+.column.aside-left {
+    font-size: 1rem;
+}
+
+.split-left {
+    width: 50%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.split-right {
+    width: 50%;
+    position: relative;
+}
+
+.text-container {
+    font-size: 1.5rem;
+    position: relative;
+    display: block;
+    text-align: left;
+    padding: 0 8% 0 10%;
+}
+
+.text-container p {
+    font-size: 0.6em;
+    font-weight: lighter;
+    line-height: 1.6rem;
+    letter-spacing: 1px;
+}
+
+.flex-tiles {
+    display: -webkit-box;
+    display: flex;
+    position: relative;
+    left: -10%;
+    padding: 10%;
+}
+
+.flex-tiles img {
+    max-width: 170px;
+    height: 170px;
+    margin-right: 3vw;
+}
+
+.more {
+    width: 50px;
+}
+
+.more-projects {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.more-projects p {
+    white-space: nowrap;
+    margin-left: -25px;
+    color: #fff;
+}
+
+.split-section-footer {
+    display: flex;
+    height: 5vh;
+    padding: 12px;
+}
+
+#rotated-contact {
+    position: fixed;
+    top: 45vh;
+    font-weight: lighter;
+}
+
+.icons {
+    position: fixed;
+    bottom: 6vh;
+    font-weight: 400;
+}
+
+.icons a {
+    padding-top: 6px;
+}
+
+.split-right-header {
+    color: #F2F2F4;
+    padding: 0 20px 40px 5px;
+    font-size: 3rem;
+    /* white-space: nowrap;
+    bigger header in typography section causes different
+    behavior from the same header and text box in design section*/
+}
+
+
+/**************** LANDING *******************/
+
+.landing {
+    height: 100vh;
+    width: 100%;
+}
+
+/************ TYPOGRAPHY SECTION ************/
+
+
+.typography {
+    background-color: #D6DE23;
+    height: 100vh;
+    width: 100%;
+}
+
+.typography .split-left {
+    background-image: url(../img/typoimg.jpg);
+}
+
+
+/********** UI / UX PROTOTYPE ***************/
+
+.uiprototype {
+    background-color: #FF635F;
+    height: 100vh;
+    width: 100%;
+}
+
+.uiprototype .split-left {
+    background-image: url(../img/designimg.jpg);
+}
+
+
+/**************** BRANDING ******************/
+
+.branding {
+    background-color: #007382;
+    height: 100vh;
+    width: 100%;
+}
+
+.branding .split-left {
+    background-image: url(../img/brandimg.jpeg);
+}
+
+
+/************ CONTACT SECTION ***************/
+
+.contact {
+    height: 35vh;
+    width: 100%;
+    background-color: #f2f2f4;
+}
+
+.contact h3 {
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    font-size: 15px;
+}
+
+.contact p {
+    font-size: 15px;
+}
+
+.contact ul {
+    flex: 1;
+    margin-right: 10vw;
+}
+
+.contact li {
+    list-style: none;
+    margin: 15px 0;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+.center-contact {
+    display: flex;
+    margin: 0 auto;
+    padding-top: 6vh;
+    width: 84%;
+    height: 80%;
+}
+
+.logo {
+    position: absolute;
+    right: 60px;
+    width: 270px;
+}
+
+.logo p {
+    margin-left: 17px;
+}
