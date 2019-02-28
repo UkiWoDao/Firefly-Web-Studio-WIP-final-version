@@ -70,8 +70,9 @@ i {
     font-size: 3.5rem;
     text-transform: capitalize;
     position: fixed;
-    left: 8%;
+    left: 5.5%;
     padding: 32px 0 15vh 0;
+    z-index: 5;
 }
 
 /************** ASIDE RIGHT **************/
@@ -222,9 +223,7 @@ i {
     color: #F2F2F4;
     padding: 0 20px 40px 5px;
     font-size: 3rem;
-    /* white-space: nowrap;
-    bigger header in typography section causes different
-    behavior from the same header and text box in design section*/
+    white-space: nowrap;
 }
 
 
@@ -233,6 +232,69 @@ i {
 .landing {
     height: 100vh;
     width: 100%;
+    position: relative;
+}
+
+.left {
+    background-color: #fff;
+    height: 100vh;
+    width: 50%;
+    float: left;
+    z-index: 0;
+}
+
+.right {
+    background-color: #f2f2f4;
+    height: 100vh;
+    width: 50%;
+    float: left;
+    z-index: 0;
+}
+
+.landing-header {
+    font-size: 12rem;
+    color: #013440;
+}
+
+#arrows {
+    width: 38px;
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#landing-code-header {
+    position: absolute;
+    top: 15%;
+    right: 50%;
+}
+
+#landing-design-header {
+    position: absolute;
+    bottom: 25%;
+}
+
+#crocs {
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.9rem;
+    font-weight: lighter;
+    color: #011519;
+}
+
+#grass {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#fireflies {
+    position: absolute;
+    top: 8vh;
+    left: 1vw;
 }
 
 /************ TYPOGRAPHY SECTION ************/
