@@ -84,16 +84,32 @@ i {
 
 .sidebar {
     position: fixed;
-    right: 40px;
+    right: 50px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 3;
 }
 
 .sidebar li {
-    padding-top: 20px;
-    color: #013440;
-    cursor: pointer;
+    position: relative;
+    display: block;
+    width: 13px;
+    height: 13px;
+    margin: 45px 0;
+    border: 2px solid #013440;
+    background-color: #013440;
+    border-radius: 2px;
+    transform: rotate(45deg);
+}
+
+.line-through:after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 45px;
+    background-color: #013440;
+    transform: rotate(135deg); /*180deg - 45deg (from li above) = 135deg*/
+    transform-origin: top center;
 }
 
 .hamburger {
@@ -117,23 +133,16 @@ i {
 /********* SPLIT LAYOUT **********/
 /*********************************/
 
-.empty-header {
-    display: flex;
-    height: 25vh;
-}
-
 .column.middle {
     width: 84%;
     display: flex;
+    margin-top: 25vh;
+    margin-left: 8%;
 }
 
 .column {
     float: left;
     height: 60vh;
-}
-
-.column.aside-left, .column.aside-right {
-    width: 8%;
 }
 
 .column.aside-left {
@@ -197,20 +206,16 @@ i {
     color: #fff;
 }
 
-.split-section-footer {
-    display: flex;
-    height: 5vh;
-    padding: 12px;
-}
-
 #rotated-contact {
     position: fixed;
     top: 45vh;
+    left: 3.5%;
     font-weight: lighter;
 }
 
 .icons {
     position: fixed;
+    left: 3%;
     bottom: 6vh;
     font-weight: 400;
 }
@@ -262,6 +267,7 @@ i {
     top: 42%;
     left: 50%;
     transform: translateX(-50%);
+    cursor: pointer;
 }
 
 #landing-code-header {
