@@ -1,4 +1,12 @@
-/* TODO: naci ko je pravio fotografije i komentovati kod svake slike */
+:root {
+    --turquoise: #007382;
+    --lighter-sea: #024F5B;
+    --deep-sea: #013440;
+    --bright-yellow: #D6DE23;
+    --salmon: #FF635F;
+    --light-gray: #F2F2F4;
+    --dark-gray: #404041;
+}
 
 * {
     margin: 0;
@@ -24,15 +32,8 @@ a {
 
 i {
     cursor: pointer;
+    transition: all 0.7s ease-in-out;
 }
-
-/* color palette
-#024F5B;
-#013440;
-#D6DE23;
-#FF635F;
-#F2F2F4;
-*/
 
 
 /*********** ASIDE LEFT *************/
@@ -53,12 +54,18 @@ i {
 }
 
 #rotated-contact {
+    position: fixed;
     display: inline-block;
     white-space: nowrap;
     transform: rotate(180deg);
     text-transform: uppercase;
     font-size: 0.8em;
     z-index: 5;
+    color: var(--turquoise);
+    top: 45vh;
+    left: 3.5%;
+    font-weight: lighter;
+    transition: all 0.7s ease-in-out;
 }
 
 .fixed-column {
@@ -66,7 +73,7 @@ i {
 }
 
 .firefly-header h1{
-    color: #013440;
+    color: var(--deep-sea);
     font-size: 3.5rem;
     text-transform: capitalize;
     position: fixed;
@@ -74,6 +81,7 @@ i {
     padding: 32px 0 15vh 0;
     z-index: 5;
 }
+
 
 /************** ASIDE RIGHT **************/
 
@@ -95,22 +103,34 @@ i {
     display: block;
     width: 13px;
     height: 13px;
-    margin: 45px 0;
-    border: 2px solid #013440;
-    background-color: #013440;
+    margin: 46px 0;
     border-radius: 2px;
     transform: rotate(45deg);
+    border: 1px solid var(--turquoise);
+    background-color: var(--turquoise);
+    transition: all 0.7s ease-in-out;
 }
 
-.line-through:after {
+.sidebar a:not(:first-child) li:after {
     content: "";
     display: block;
     width: 1px;
     height: 45px;
-    background-color: #013440;
-    transform: rotate(135deg); /*180deg - 45deg (from li above) = 135deg*/
+    background-color: var(--deep-sea);
+    transform: rotate(135deg);
     transform-origin: top center;
+    pointer-events: none;
 }
+
+/* .nav-active-1 {
+    background-color: var(--bright-yellow);
+    border: 2px solid var(--bright-yellow);
+} */
+
+/* .nav-active-2 {
+    background-color: white;
+    border: 2px solid white;
+} */
 
 .hamburger {
     right: 7%;
@@ -124,10 +144,15 @@ i {
 .hamburger div{
     width: 35px;
     height: 5px;
-    background-color: #013440;
     margin: 6px 0;
+    border-radius: 3px;
+    background-color: var(--turquoise);
+    transition: all 0.7s ease-in-out;
 }
 
+/* .secondary-color {
+    background-color: var(--deep-sea);
+} */
 
 /*********************************/
 /********* SPLIT LAYOUT **********/
@@ -176,6 +201,7 @@ i {
     letter-spacing: 1px;
 }
 
+/* TODO: add media query for flex-tiles */
 .flex-tiles {
     display: -webkit-box;
     display: flex;
@@ -203,14 +229,7 @@ i {
 .more-projects p {
     white-space: nowrap;
     margin-left: -25px;
-    color: #fff;
-}
-
-#rotated-contact {
-    position: fixed;
-    top: 45vh;
-    left: 3.5%;
-    font-weight: lighter;
+    color: var(--light-gray);
 }
 
 .icons {
@@ -222,13 +241,21 @@ i {
 
 .icons a {
     padding-top: 6px;
+    color: var(--turquoise);
 }
 
 .split-right-header {
-    color: #F2F2F4;
+    color: var(--light-gray);
     padding: 0 20px 40px 5px;
     font-size: 3rem;
     white-space: nowrap;
+}
+
+.down-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 2vh;
 }
 
 
@@ -241,7 +268,7 @@ i {
 }
 
 .left {
-    background-color: #fff;
+    background-color: white;
     height: 100vh;
     width: 50%;
     float: left;
@@ -249,7 +276,7 @@ i {
 }
 
 .right {
-    background-color: #f2f2f4;
+    background-color: var(--light-gray);
     height: 100vh;
     width: 50%;
     float: left;
@@ -258,7 +285,7 @@ i {
 
 .landing-header {
     font-size: 12rem;
-    color: #013440;
+    color: var(--deep-sea);
 }
 
 #arrows {
@@ -303,13 +330,18 @@ i {
     left: 1vw;
 }
 
+
 /************ TYPOGRAPHY SECTION ************/
 
-
 .typography {
-    background-color: #D6DE23;
+    position: relative;
+    background-color: var(--bright-yellow);
     height: 100vh;
     width: 100%;
+}
+
+.typography .more-projects p{
+    color: var(--deep-sea);
 }
 
 .typography .split-left {
@@ -320,7 +352,8 @@ i {
 /********** UI / UX PROTOTYPE ***************/
 
 .uiprototype {
-    background-color: #FF635F;
+    position: relative;
+    background-color: var(--salmon);
     height: 100vh;
     width: 100%;
 }
@@ -333,7 +366,8 @@ i {
 /**************** BRANDING ******************/
 
 .branding {
-    background-color: #007382;
+    position: relative;
+    background-color: var(--turquoise);
     height: 100vh;
     width: 100%;
 }
@@ -348,7 +382,7 @@ i {
 .contact {
     height: 35vh;
     width: 100%;
-    background-color: #f2f2f4;
+    background-color: var(--light-gray);
 }
 
 .contact h3 {
