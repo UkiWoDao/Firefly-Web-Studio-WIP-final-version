@@ -14,13 +14,15 @@ function changeHamburger() {
 };
 
 // try make list items change sequentially on scroll
-
+// stop js from overwriting active class colors on scroll
+var navDOM = document.querySelectorAll('.sidebar li');
 function changeNav() {
-  var navDOM = document.querySelectorAll('.sidebar li');
   var halfHeight = window.innerHeight / 2;
   if (document.body.scrollTop || document.documentElement.scrollTop > halfHeight) {
       for (var i = 0; i < navDOM.length; i++) {
-          navDOM[i].style.backgroundColor = 'var(--deep-sea)';
+          if (navDOM[i].style.backgroundColor = 'var(--turquoise)') {
+              navDOM[i].style.backgroundColor = 'var(--deep-sea)';
+          }
       }
   }
   if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
@@ -62,6 +64,15 @@ document.addEventListener('scroll', () => {
     changeSoc();
     changeContact();
 });
+
+$(document).ready(function(){
+  $(navDOM).click(function(){
+    $(navDOM).removeClass('active-1'); //to make sure there will be only one with the class 'active'
+    $(this).removeClass('inactive-1');
+    $(this).addClass('active-1');
+  });
+})
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     document.addEventListener('scroll', function() {
