@@ -1,6 +1,7 @@
 // TODO: make list items change sequentially on scroll
 // TODO: stop js from overwriting active class colors on scroll
 // TODO: make js keep track of section to update active li
+// FIXME: aside soc artefact in overlay event
 // IDEA: put pulsing yellow blur that imitates mix blend mode on firefly header
 
 function changeHamburger() {
@@ -68,25 +69,52 @@ document.addEventListener('scroll', () => {
     changeContact();
 });
 
-// FIXME: make only overlay trigger nav toggle
+function preventDefault(e) {
+  e = e || window.event;
+  if (e.preventDefault)
+      e.preventDefault();
+  e.returnValue = false;
+}
+
+function wheel(e) {
+  preventDefault(e);
+}
+
+function disable_scroll() {
+  if (window.addEventListener) {
+      window.addEventListener('DOMMouseScroll', wheel, false);
+      }
+  window.onmousewheel = document.onmousewheel = wheel;
+}
+
+function enable_scroll() {
+    if (window.removeEventListener) {
+        window.removeEventListener('DOMMouseScroll', wheel, false);
+    }
+    window.onmousewheel = document.onmousewheel = document.onkeydown = null;
+}
+
 document.querySelector('.hamburger').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
     var navWrapDOM = document.querySelector('.nav-wrapper');
     overlayDOM.style.marginLeft = '0';
     navWrapDOM.style.right = '0';
+    disable_scroll();
     overlayDOM.addEventListener('click', function() {
-        overlayDOM.style.marginLeft = '100vw';
-        navWrapDOM.style.right = '-30vw';
+        overlayDOM.style.marginLeft = '160vw';
+        navWrapDOM.style.right = '-60vw';
+        enable_scroll();
     })
 });
 
 $(document).ready(function(){
   $(navDOM).click(function(){
-    $(navDOM).removeClass('active-1'); //to make sure there will be only one with the class 'active'
+    $(navDOM).removeClass('active-1'); //ensure there will be only one with the class 'active'
     $(this).removeClass('inactive-1');
     $(this).addClass('active-1');
   });
 })
+
 
 
 // document.addEventListener('DOMContentLoaded', function() {
