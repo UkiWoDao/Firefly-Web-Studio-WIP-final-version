@@ -1,3 +1,8 @@
+     // TODO: make list items change sequentially on scroll
+// TODO: stop js from overwriting active class colors on scroll
+// TODO: make js keep track of section to update active li
+// IDEA: put pulsing yellow blur that imitates mix blend mode on firefly header
+
 function changeHamburger() {
   var hamburgerDOM = document.querySelectorAll('.hamburger div');
   var fullHeight = window.innerHeight;
@@ -13,8 +18,6 @@ function changeHamburger() {
   }
 };
 
-// try make list items change sequentially on scroll
-// stop js from overwriting active class colors on scroll
 var navDOM = document.querySelectorAll('.sidebar li');
 function changeNav() {
   var halfHeight = window.innerHeight / 2;
@@ -63,6 +66,15 @@ document.addEventListener('scroll', () => {
     changeNav();
     changeSoc();
     changeContact();
+});
+
+// FIXME: make only overlay trigger nav toggle
+document.querySelector('.hamburger').addEventListener('click', function() {
+    var overlayDOM = document.querySelector('.overlay');
+    overlayDOM.style.marginLeft = '0';
+    overlayDOM.addEventListener('click', function() {
+        overlayDOM.style.marginLeft = '100vw';
+    })
 });
 
 $(document).ready(function(){
