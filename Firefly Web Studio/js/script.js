@@ -1,4 +1,4 @@
-     // TODO: make list items change sequentially on scroll
+// TODO: make list items change sequentially on scroll
 // TODO: stop js from overwriting active class colors on scroll
 // TODO: make js keep track of section to update active li
 // IDEA: put pulsing yellow blur that imitates mix blend mode on firefly header
@@ -71,9 +71,12 @@ document.addEventListener('scroll', () => {
 // FIXME: make only overlay trigger nav toggle
 document.querySelector('.hamburger').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
+    var navWrapDOM = document.querySelector('.nav-wrapper');
     overlayDOM.style.marginLeft = '0';
+    navWrapDOM.style.right = '0';
     overlayDOM.addEventListener('click', function() {
         overlayDOM.style.marginLeft = '100vw';
+        navWrapDOM.style.right = '-30vw';
     })
 });
 
