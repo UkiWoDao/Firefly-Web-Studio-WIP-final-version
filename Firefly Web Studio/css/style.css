@@ -1,3 +1,5 @@
+/* TODO: add subtle animation on .hamburger div */
+
 :root {
     --turquoise: #007382;
     --lighter-sea: #024F5B;
@@ -6,6 +8,12 @@
     --salmon: #FF635F;
     --light-gray: #F2F2F4;
     --dark-gray: #404041;
+    /*responsive*/
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
 }
 
 * {
@@ -32,9 +40,18 @@ a {
 
 i {
     cursor: pointer;
-    transition: all 0.7s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
+.firefly-header h1{
+    color: var(--deep-sea);
+    font-size: 3.5rem;
+    text-transform: capitalize;
+    position: fixed;
+    left: 5.5%;
+    padding: 32px 0 15vh 0;
+    z-index: 5;
+}
 
 /*********** ASIDE LEFT *************/
 
@@ -63,27 +80,16 @@ i {
     z-index: 5;
     color: var(--turquoise);
     top: 45vh;
-    left: 3.5%;
+    left: 3.2%;
     font-weight: lighter;
-    transition: all 0.7s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .fixed-column {
     position: fixed;
 }
 
-.firefly-header h1{
-    color: var(--deep-sea);
-    font-size: 3.5rem;
-    text-transform: capitalize;
-    position: fixed;
-    left: 5.5%;
-    padding: 32px 0 15vh 0;
-    z-index: 5;
-}
-
-
-/************** ASIDE RIGHT **************/
+/************** NAVIGATION **************/
 
 .aside-right {
     position: relative;
@@ -106,28 +112,32 @@ i {
     margin: 46px 0;
     border-radius: 2px;
     transform: rotate(45deg);
-    border: 1px solid var(--turquoise);
-    background-color: var(--turquoise);
-    transition: all 0.7s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .sidebar a:not(:first-child) li:after {
     content: "";
     display: block;
     width: 1px;
-    height: 45px;
+    height: 47px;
     background-color: var(--deep-sea);
     transform: rotate(135deg);
     transform-origin: top center;
     pointer-events: none;
 }
 
-/* .nav-active-1 {
+.inactive-1 {
+    border: 2px solid var(--turquoise);
+    background-color: var(--turquoise);
+}
+
+.active-1 {
     background-color: var(--bright-yellow);
     border: 2px solid var(--bright-yellow);
-} */
+    box-shadow: 0 0 10px var(--bright-yellow);
+}
 
-/* .nav-active-2 {
+/* .active-2 {
     background-color: white;
     border: 2px solid white;
 } */
@@ -147,16 +157,47 @@ i {
     margin: 6px 0;
     border-radius: 3px;
     background-color: var(--turquoise);
-    transition: all 0.7s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 /* .secondary-color {
     background-color: var(--deep-sea);
 } */
 
-/*********************************/
-/********* SPLIT LAYOUT **********/
-/*********************************/
+.overlay {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(214, 222, 35, 0.7);
+    /* background-color: rgba(255, 99, 95, 0.5); */
+    z-index: 6;
+    transition: 0.6s all ease-out;
+    margin-left: 100vw;
+}
+
+.nav-wrapper {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30%;
+    background-color: rgba(0, 115, 130, 0.7);
+}
+
+.nav-inner-wrapper {
+    height: 90%;
+    width: 60%;
+    margin: 20vh auto;
+    list-style: none;
+}
+
+.nav-inner-wrapper li {
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/***********************************/
+/****** SECTION SPLIT LAYOUT *******/
+/***********************************/
 
 .column.middle {
     width: 84%;
