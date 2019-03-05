@@ -171,16 +171,24 @@ i {
     background-color: rgba(214, 222, 35, 0.7);
     /* background-color: rgba(255, 99, 95, 0.5); */
     z-index: 6;
-    transition: 0.6s all ease-out;
+    transition: 0.6s all ease-in-out;
     margin-left: 100vw;
+}
+
+/* FIXME: glitchy animation */
+.overlay:hover {
+    cursor: url(../symbol/close-symbol.svg), auto;
 }
 
 .nav-wrapper {
     position: absolute;
-    right: 0;
+    right: -30%;
     height: 100%;
     width: 30%;
     background-color: rgba(0, 115, 130, 0.7);
+    transition: 0.4s all ease-in-out;
+    transition-delay: 0.5s;
+    z-index: 7;
 }
 
 .nav-inner-wrapper {
@@ -190,11 +198,17 @@ i {
     list-style: none;
 }
 
+/* TODO: add sequential animation delay */
 .nav-inner-wrapper li {
     margin-bottom: 40px;
     text-transform: uppercase;
+    color: var(--light-gray);
 }
 
+.nav-inner-wrapper i {
+    color: var(--deep-sea);
+    margin-right: 20px;
+}
 /***********************************/
 /****** SECTION SPLIT LAYOUT *******/
 /***********************************/
