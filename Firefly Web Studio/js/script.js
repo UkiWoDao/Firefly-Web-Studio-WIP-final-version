@@ -1,4 +1,4 @@
-// TODO: make list items change sequentially on scroll
+// TODO: make list items colors change sequentially on scroll
 // TODO: stop js from overwriting active class colors on scroll
 // TODO: make js keep track of section to update active li
 // FIXME: aside soc artefact in overlay event
