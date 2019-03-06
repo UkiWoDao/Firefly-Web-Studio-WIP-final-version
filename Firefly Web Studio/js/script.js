@@ -18,7 +18,7 @@ var changeSoc = function() {
   var socDOM = document.querySelectorAll('.icons i');
       for (var i = 0; i < socDOM.length; i++) {
           if (socDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
-              socDOM[i].style.color = 'var(--deep-sea)';
+              socDOM[i].style.color = 'black';
           } else {
               socDOM[i].style.color = 'var(--turquoise)';
           }
@@ -52,6 +52,14 @@ var changeNav = function() {
           navDOM[i].style.backgroundColor = 'var(--turquoise)';
         }
 }
+
+$(document).ready(function(){
+  $(navDOM).click(function(){
+    $(navDOM).removeClass('active-1'); //ensure there will be only one with the class 'active'
+    $(this).removeClass('inactive-1');
+    $(this).addClass('active-1');
+  });
+})
 
 /*************** ASIDE CONTACT ********************/
 var changeContact = function() {
@@ -103,14 +111,6 @@ document.querySelector('.hamburger').addEventListener('click', function() {
         enable_scroll();
     })
 });
-
-$(document).ready(function(){
-  $(navDOM).click(function(){
-    $(navDOM).removeClass('active-1'); //ensure there will be only one with the class 'active'
-    $(this).removeClass('inactive-1');
-    $(this).addClass('active-1');
-  });
-})
 
 // var winH = window.innerHeight;
 // document.documentElement.clientHeight
