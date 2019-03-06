@@ -1,67 +1,9 @@
-// TODO: make list items colors change sequentially on scroll
 // TODO: stop js from overwriting active class colors on scroll
-// TODO: make js keep track of section to update active li
+// TODO: make js keep track of section in view to update active li
 // FIXME: aside soc artefact in overlay event
-// IDEA: put pulsing yellow blur that imitates mix blend mode on firefly header
+// TODO: use scrollIntoView() for accessing section from active overlay
 
-function changeHamburger() {
-  var hamburgerDOM = document.querySelectorAll('.hamburger div');
-  var fullHeight = window.innerHeight;
-  if (document.body.scrollTop || document.documentElement.scrollTop > fullHeight) {
-      for (var i = 0; i < hamburgerDOM.length; i++) {
-          hamburgerDOM[i].style.backgroundColor = 'var(--deep-sea)';
-      }
-  }
-  if (document.body.scrollTop || document.documentElement.scrollTop < fullHeight) {
-      for (var i = 0; i < hamburgerDOM.length; i++) {
-          hamburgerDOM[i].style.backgroundColor = 'var(--turquoise)';
-      }
-  }
-};
-
-var navDOM = document.querySelectorAll('.sidebar li');
-function changeNav() {
-  var halfHeight = window.innerHeight / 2;
-  if (document.body.scrollTop || document.documentElement.scrollTop > halfHeight) {
-      for (var i = 0; i < navDOM.length; i++) {
-          if (navDOM[i].style.backgroundColor = 'var(--turquoise)') {
-              navDOM[i].style.backgroundColor = 'var(--deep-sea)';
-          }
-      }
-  }
-  if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
-      for (var i = 0; i < navDOM.length; i++) {
-          navDOM[i].style.backgroundColor = 'var(--turquoise)';
-      }
-  }
-};
-
-function changeSoc() {
-  var socDOM = document.querySelectorAll('.icons i');
-  var smallHeight = window.innerHeight / 10;
-  if (document.body.scrollTop || document.documentElement.scrollTop > smallHeight) {
-      for (var i = 0; i < socDOM.length; i++) {
-          socDOM[i].style.color = 'black';
-      }
-  }
-  if (document.body.scrollTop || document.documentElement.scrollTop < smallHeight) {
-      for (var i = 0; i < socDOM.length; i++) {
-          socDOM[i].style.color = 'var(--turquoise)';
-      }
-  }
-};
-
-function changeContact() {
-  var contDOM = document.getElementById('rotated-contact');
-  var halfHeight = window.innerHeight / 2;
-  if (document.body.scrollTop || document.documentElement.scrollTop > halfHeight) {
-         contDOM.style.color = 'black';
-  }
-  if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
-        contDOM.style.color = 'var(--turquoise)';
-  }
-};
-
+/*********** SCROLL EVENTS **********/
 document.addEventListener('scroll', () => {
     changeHamburger();
     changeNav();
@@ -69,15 +11,70 @@ document.addEventListener('scroll', () => {
     changeContact();
 });
 
+// za active nav na skrol heightu promeniti css naziv klase
+
+/************* CONTACT ICONS ****************/
+var changeSoc = function() {
+  var socDOM = document.querySelectorAll('.icons i');
+      for (var i = 0; i < socDOM.length; i++) {
+          if (socDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
+              socDOM[i].style.color = 'var(--deep-sea)';
+          } else {
+              socDOM[i].style.color = 'var(--turquoise)';
+          }
+      }
+};
+
+/************** MENU ICON *****************/
+var changeHamburger = function() {
+  var hamburgerDOM = document.querySelectorAll('.hamburger div');
+  if (document.body.scrollTop || document.documentElement.scrollTop > window.innerHeight) {
+      for (var i = 0; i < hamburgerDOM.length; i++) {
+          hamburgerDOM[i].style.backgroundColor = 'var(--deep-sea)';
+      }
+  }
+  if (document.body.scrollTop || document.documentElement.scrollTop < window.innerHeight) {
+      for (var i = 0; i < hamburgerDOM.length; i++) {
+          hamburgerDOM[i].style.backgroundColor = 'var(--turquoise)';
+       }
+    }
+};
+
+/***************** SIDEBAR LIST ITEMS ***********************/
+var typoSection = document.querySelector('.typography');
+var navDOM = document.querySelectorAll('.sidebar li');
+var changeNav = function() {
+  for (var i = 0; i < navDOM.length; i++) // go through all list items
+      // each list item that trespasses into the next section gets changed
+      if (navDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
+          navDOM[i].style.backgroundColor = 'var(--deep-sea)';
+        } else {
+          navDOM[i].style.backgroundColor = 'var(--turquoise)';
+        }
+}
+
+/*************** ASIDE CONTACT ********************/
+var changeContact = function() {
+  var contDOM = document.getElementById('rotated-contact');
+  var halfHeight = window.innerHeight / 2;
+      if (document.body.scrollTop || document.documentElement.scrollTop > halfHeight) {
+             contDOM.style.color = 'black';
+      }
+      if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
+            contDOM.style.color = 'var(--turquoise)';
+      }
+};
+
+/************* PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
+function wheel(e) {
+  preventDefault(e);
+}
+
 function preventDefault(e) {
   e = e || window.event;
   if (e.preventDefault)
       e.preventDefault();
   e.returnValue = false;
-}
-
-function wheel(e) {
-  preventDefault(e);
 }
 
 function disable_scroll() {
@@ -114,24 +111,6 @@ $(document).ready(function(){
     $(this).addClass('active-1');
   });
 })
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.addEventListener('scroll', function() {
-//         // if scrolled height > viewport height, change color of element
-//         if (document.body.scrollTop || document.documentElement.scrollTop > winH) {
-//             for (var i = 0; i < hamburgerDOM.length; i++) {
-//                 hamburgerDOM[i].style.backgroundColor = 'var(--deep-sea)';
-//             }
-//         }
-//         if (document.body.scrollTop || document.documentElement.scrollTop < winH) {
-//             for (var i = 0; i < hamburgerDOM.length; i++) {
-//                 hamburgerDOM[i].style.backgroundColor = 'var(--turquoise)';
-//             }
-//         }
-//     })
-// });
 
 // var winH = window.innerHeight;
 // document.documentElement.clientHeight
