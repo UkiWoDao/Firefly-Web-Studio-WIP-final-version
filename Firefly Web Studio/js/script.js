@@ -106,8 +106,8 @@ document.querySelector('.hamburger').addEventListener('click', function() {
     navWrapDOM.style.right = '0';
     disable_scroll();
     overlayDOM.addEventListener('click', function() {
-        overlayDOM.style.marginLeft = '160vw';
-        navWrapDOM.style.right = '-60vw';
+        overlayDOM.style.marginLeft = '100vw';
+        navWrapDOM.style.right = '-30%';
         enable_scroll();
     })
 });
