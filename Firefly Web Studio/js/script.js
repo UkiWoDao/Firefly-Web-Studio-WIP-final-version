@@ -1,7 +1,8 @@
 // TODO: stop js from overwriting active class colors on scroll
 // TODO: make js keep track of section in view to update active li
-// FIXME: aside soc artefact in overlay event
+// FIXME: overlay event flicker animation
 // TODO: use scrollIntoView() for accessing section from active overlay
+// TODO: hide navDOM when overlay is active
 
 /*********** SCROLL EVENTS **********/
 document.addEventListener('scroll', () => {
