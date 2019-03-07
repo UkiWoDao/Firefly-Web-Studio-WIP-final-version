@@ -4,6 +4,11 @@
 // TODO: use scrollIntoView() for accessing section from active overlay
 // TODO: hide navDOM when overlay is active
 
+/********** SCROLL TO TOP ON REFRESH PAGE **************/
+$(document).ready(function(){
+    $(this).scrollTop(0);
+});
+
 /*********** SCROLL EVENTS **********/
 document.addEventListener('scroll', () => {
     changeHamburger();
