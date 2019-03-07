@@ -1,4 +1,3 @@
-
 :root {
     --turquoise: #007382;
     --lighter-sea: #024F5B;
@@ -55,11 +54,11 @@ i {
 
 /*********** ASIDE LEFT *************/
 
-.aside-left {
+/* .aside-left {
     position: relative;
-}
+} */
 
-.center-soc {
+/* .center-soc {
     position: absolute;
     top: 50%;
     left: 40%;
@@ -68,26 +67,46 @@ i {
     justify-content: center;
     z-index: 5;
     font-size: 1.4rem;
+} */
+
+.icons {
+    position: fixed;
+    display: block;
+    width: 25px; /* writing mode produces unexpected behavior */
+    text-align: center;
+    z-index: 4;
+    font-size: 1.5rem;
+    bottom: 6vh;
+    font-weight: lighter;
+    left: 48px; /* align manually with rotated contact*/
+}
+
+.icons i {
+    margin-top: 2vh;
+}
+
+.icons i:hover {
+    transform: scale(1.1);
+    text-shadow: 0 2px 1px black;
 }
 
 #rotated-contact {
     position: fixed;
     display: inline-block;
-    white-space: nowrap;
-    transform: rotate(180deg);
+    transform: rotate(-90deg);
     text-transform: uppercase;
     font-size: 0.8em;
     z-index: 5;
     color: var(--turquoise);
-    top: 45vh;
-    left: 3.2%;
-    font-weight: lighter;
+    top: 45%;
     transition: all 0.5s ease-in-out;
+    font-size: 1.2rem;
+    font-weight: lighter;
 }
 
-.fixed-column {
+/* .fixed-column {
     position: fixed;
-}
+} */
 
 /************** NAVIGATION **************/
 
@@ -169,6 +188,7 @@ i {
     z-index: 6;
     transition: 0.7s all ease-in-out;
     margin-left: 100vw;
+      -webkit-transform:translate3d(0,0,0);
 }
 
 .overlay:hover {
@@ -282,12 +302,12 @@ i {
     color: var(--light-gray);
 }
 
-.icons {
+/* .icons {
     position: fixed;
     left: 3%;
     bottom: 6vh;
     font-weight: 400;
-}
+} */
 
 .icons a {
     padding-top: 6px;
