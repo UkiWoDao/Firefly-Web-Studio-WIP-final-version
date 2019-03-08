@@ -3,6 +3,7 @@
 // FIXME: overlay event flicker animation
 // TODO: use scrollIntoView() for accessing section from active overlay
 // TODO: hide navDOM when overlay is active
+// TODO: snazzy animation when deaactivating overlay
 
 /********** SCROLL TO TOP ON REFRESH PAGE **************/
 $(document).ready(function(){
@@ -54,9 +55,9 @@ var changeNav = function() {
       // each list item that trespasses into the next section gets changed
       if (navDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
           navDOM[i].style.backgroundColor = 'var(--deep-sea)';
-        } else {
+      } else {
           navDOM[i].style.backgroundColor = 'var(--turquoise)';
-        }
+      }
 }
 
 $(document).ready(function(){
@@ -66,6 +67,13 @@ $(document).ready(function(){
     $(this).addClass('active-1');
   });
 })
+
+// var sectionHeight = document.querySelector('section').offsetHeight;
+// var y = window.scrollY;
+// make js know what section you're on
+    // grab section height as unit of measure
+// toggle active accordingly
+
 
 /*************** ASIDE CONTACT ********************/
 var changeContact = function() {
@@ -108,12 +116,17 @@ function enable_scroll() {
 document.querySelector('.hamburger').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
     var navWrapDOM = document.querySelector('.nav-wrapper');
+    // var overlayListItems = document.querySelectorAll('.nav-inner-wrapper a li');
+    // let activeOverlay = false;
     overlayDOM.style.marginLeft = '0';
     navWrapDOM.style.right = '0';
+    // $(overlayListItems).addClass('animate');
     disable_scroll();
     overlayDOM.addEventListener('click', function() {
         overlayDOM.style.marginLeft = '100vw';
         navWrapDOM.style.right = '-30%';
+        // $(overlayListItems).removeClass('animate');
+        // let activeOverlay = true;
         enable_scroll();
     })
 });
