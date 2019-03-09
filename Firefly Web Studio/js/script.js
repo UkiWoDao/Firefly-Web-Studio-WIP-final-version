@@ -34,18 +34,16 @@ var changeSoc = function() {
 
 /************** MENU ICON *****************/
 var changeHamburger = function() {
+  var hamburgerHeight = window.innerHeight - 32; // height of a section - position top of hamburger
   var hamburgerDOM = document.querySelectorAll('.hamburger div');
-  if (document.body.scrollTop || document.documentElement.scrollTop > window.innerHeight) {
       for (var i = 0; i < hamburgerDOM.length; i++) {
-          hamburgerDOM[i].style.backgroundColor = 'var(--deep-sea)';
+          if (document.body.scrollTop || document.documentElement.scrollTop > hamburgerHeight) {
+              hamburgerDOM[i].style.backgroundColor = 'var(--deep-sea)';
+          } else {
+              hamburgerDOM[i].style.backgroundColor = 'var(--turquoise)';
+          }
       }
-  }
-  if (document.body.scrollTop || document.documentElement.scrollTop < window.innerHeight) {
-      for (var i = 0; i < hamburgerDOM.length; i++) {
-          hamburgerDOM[i].style.backgroundColor = 'var(--turquoise)';
-       }
-    }
-};
+  };
 
 /***************** SIDEBAR LIST ITEMS ***********************/
 var typoSection = document.querySelector('.typography');
