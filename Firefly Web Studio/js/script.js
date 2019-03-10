@@ -1,14 +1,14 @@
-// TODO: stop js from overwriting active class colors on scroll
 // TODO: make js keep track of section in view to update active li
 // FIXME: overlay event flicker animation
 // TODO: use scrollIntoView() for accessing section from active overlay
 // TODO: hide navDOM when overlay is active
-// TODO: snazzy animation when deaactivating overlay
+// TODO: snazzy animation when deactivating overlay
+// TODO: socDOM, contactDOM, navDOm become sticky right before entering footer section
 
 /********** SCROLL TO TOP ON REFRESH PAGE **************/
 $(document).ready(function(){
     $(this).scrollTop(0);
-});
+ });
 
 /*********** SCROLL EVENTS **********/
 document.addEventListener('scroll', () => {
@@ -16,25 +16,25 @@ document.addEventListener('scroll', () => {
     changeNav();
     changeSoc();
     changeContact();
-});
-
-// za active nav na skrol heightu promeniti css naziv klase
+ });
 
 /************* CONTACT ICONS ****************/
 var changeSoc = function() {
-  var socDOM = document.querySelectorAll('.icons i');
-      for (var i = 0; i < socDOM.length; i++) {
-          if (socDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
-              socDOM[i].style.color = 'black';
-          } else {
-              socDOM[i].style.color = 'var(--turquoise)';
-          }
-      }
-};
+    var typoSectionTop = document.querySelector('.typography').getBoundingClientRect().top;
+    var socDOM = document.querySelectorAll('.icons i');
+        // if (activeNavDOM == false) {
+            for (var i = 0; i < socDOM.length; i++) {
+                if (socDOM[i].getBoundingClientRect().bottom > typoSectionTop) {
+                    socDOM[i].style.color = 'black';
+                } else {
+                    socDOM[i].style.color = 'var(--turquoise)';
+                }
+            }
+  };
 
 /************** MENU ICON *****************/
 var changeHamburger = function() {
-  var hamburgerHeight = window.innerHeight - 32; // height of a section - position top of hamburger
+  var hamburgerHeight = window.innerHeight - 32; // height of the viewport (= 1 section) - position top of hamburger
   var hamburgerDOM = document.querySelectorAll('.hamburger div');
       for (var i = 0; i < hamburgerDOM.length; i++) {
           if (document.body.scrollTop || document.documentElement.scrollTop > hamburgerHeight) {
@@ -45,33 +45,28 @@ var changeHamburger = function() {
       }
   };
 
+
 /***************** SIDEBAR LIST ITEMS ***********************/
-var typoSection = document.querySelector('.typography');
+// var typoSection = document.querySelector('.typography');
 var navDOM = document.querySelectorAll('.sidebar li');
+
+ $(navDOM).click(function() {
+    $(navDOM).removeClass('active-2');
+    $(navDOM).removeClass('active-1');
+    $(this).filter($(navDOM[0])).toggleClass('active-1');
+    $(this).not(navDOM[0]).toggleClass('active-2');
+ });
+
 var changeNav = function() {
-  for (var i = 0; i < navDOM.length; i++) // go through all list items
-      // each list item that trespasses into the next section gets changed
-      if (navDOM[i].getBoundingClientRect().bottom > typoSection.getBoundingClientRect().top) {
-          navDOM[i].style.backgroundColor = 'var(--deep-sea)';
-      } else {
-          navDOM[i].style.backgroundColor = 'var(--turquoise)';
-      }
-}
-
-$(document).ready(function(){
-  $(navDOM).click(function(){
-    $(navDOM).removeClass('active-1'); //ensure there will be only one with the class 'active'
-    $(this).removeClass('inactive-1');
-    $(this).addClass('active-1');
-  });
-})
-
-// var sectionHeight = document.querySelector('section').offsetHeight;
-// var y = window.scrollY;
-// make js know what section you're on
-    // grab section height as unit of measure
-// toggle active accordingly
-
+    var typoSectionTop = document.querySelector('.typography').getBoundingClientRect().top;
+        for (var i = 0; i < navDOM.length; i++) {
+            if (navDOM[i].getBoundingClientRect().bottom > typoSectionTop) {
+                navDOM[i].classList.replace('inactive-1', 'inactive-2');
+            } else {
+                navDOM[i].classList.replace('inactive-2', 'inactive-1');
+            }
+        }
+  };
 
 /*************** ASIDE CONTACT ********************/
 var changeContact = function() {
@@ -83,33 +78,33 @@ var changeContact = function() {
       if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
             contDOM.style.color = 'var(--turquoise)';
       }
-};
+  };
 
 /************* PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
 function wheel(e) {
   preventDefault(e);
-}
+ }
 
 function preventDefault(e) {
   e = e || window.event;
   if (e.preventDefault)
       e.preventDefault();
   e.returnValue = false;
-}
+ }
 
 function disable_scroll() {
   if (window.addEventListener) {
       window.addEventListener('DOMMouseScroll', wheel, false);
       }
   window.onmousewheel = document.onmousewheel = wheel;
-}
+ }
 
 function enable_scroll() {
     if (window.removeEventListener) {
         window.removeEventListener('DOMMouseScroll', wheel, false);
     }
     window.onmousewheel = document.onmousewheel = document.onkeydown = null;
-}
+ }
 
 document.querySelector('.hamburger').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
@@ -127,7 +122,7 @@ document.querySelector('.hamburger').addEventListener('click', function() {
         // let activeOverlay = true;
         enable_scroll();
     })
-});
+ });
 
 // var winH = window.innerHeight;
 // document.documentElement.clientHeight
