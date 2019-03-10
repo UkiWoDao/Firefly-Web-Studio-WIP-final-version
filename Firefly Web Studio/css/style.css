@@ -128,13 +128,20 @@ i {
     background-color: var(--turquoise);
 }
 
+.inactive-2 {
+    border: 2px solid var(--deep-sea);
+    background-color: var(--deep-sea);
+}
+
 .active-1 {
-    border: 2px solid var(--bright-yellow);
+    background-color: var(--bright-yellow);
+    border: 2px solid var(--deep-sea);
     box-shadow: 0 0 10px var(--bright-yellow);
 }
 
 .active-2 {
-    border: 2px solid white;
+    background-color: white;
+    border: 2px solid var(--deep-sea);
     box-shadow: 0 0 10px white;
 }
 
@@ -268,10 +275,6 @@ i {
     height: 60vh;
 }
 
-.column.aside-left {
-    font-size: 1rem;
-}
-
 .split-left {
     width: 50%;
     background-position: center;
@@ -385,7 +388,7 @@ i {
     top: 42%;
     left: 50%;
     transform: translateX(-50%);
-    cursor: pointer;
+    cursor: grab;
 }
 
 #landing-code-header {
