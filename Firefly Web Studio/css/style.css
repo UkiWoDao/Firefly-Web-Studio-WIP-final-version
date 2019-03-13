@@ -25,6 +25,7 @@ body {
     font-family: Helvetica, 'Arimo';
     font-weight: 700;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 h1, h2 {
@@ -84,7 +85,7 @@ i {
     font-size: 0.8em;
     z-index: 5;
     color: var(--turquoise);
-    top: 45%;
+    top: 40%;
     transition: all 0.5s ease-in-out;
     font-size: 1.2rem;
     font-weight: lighter;
@@ -96,7 +97,7 @@ i {
 .sidebar {
     position: fixed;
     right: 50px;
-    top: 50%;
+    top: 40%;
     transform: translateY(-50%);
     z-index: 3;
 }
@@ -133,33 +134,33 @@ i {
     background-color: var(--deep-sea);
 }
 
+/* IDEA: pulsating active nav glow */
+
 .active-1 {
     background-color: var(--bright-yellow);
     border: 2px solid var(--deep-sea);
-    box-shadow: 0 0 10px var(--bright-yellow);
+    box-shadow: 0 0 10px 4px var(--bright-yellow);
 }
 
 .active-2 {
     background-color: white;
     border: 2px solid var(--deep-sea);
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 10px 4px white;
 }
 
 .hamburger {
     right: 7%;
     top: 32px;
-    display: block;
+    width: 50px;
+    height: 36px;
     position: fixed;
     cursor: pointer;
     z-index: 3;
+    transition: 0.5s;
 }
 
-.hamburger div{
-    width: 35px;
-    height: 5px;
-    margin: 6px 0;
-    border-radius: 3px;
-    background-color: var(--turquoise);
+#hamburger-svg {
+    fill: var(--turquoise);
     transition: all 0.5s ease-in-out;
 }
 
@@ -171,7 +172,11 @@ i {
     /* background-color: rgba(255, 99, 95, 0.5); */
     z-index: 6;
     transition: 0.7s all ease-in-out;
-    margin-left: 100vw;
+    transform: translateX(100%);
+}
+
+.overlay-active {
+    transform: translateX(0%);
 }
 
 .overlay:hover {
@@ -179,14 +184,19 @@ i {
 }
 
 .nav-wrapper {
-    position: absolute;
-    right: -30%;
+    position: fixed;
+    right: 0;
     height: 100%;
     width: 30%;
     background-color: rgba(0, 115, 130, 0.7);
     transition: 0.4s all ease-in-out;
     transition-delay: 0.3s;
     z-index: 7;
+    transform: translateX(100%);
+}
+
+.nav-wrapper-active {
+    transform: translateX(0%);
 }
 
 .nav-inner-wrapper {
@@ -395,11 +405,13 @@ i {
     position: absolute;
     top: 15%;
     right: 50%;
+    margin-right: -10px;
 }
 
 #landing-design-header {
     position: absolute;
     bottom: 25%;
+    margin-left: -13px;
 }
 
 #crocs {
