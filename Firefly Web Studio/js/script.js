@@ -1,8 +1,7 @@
 // IDEA: use scrollIntoView() for accessing section from active overlay
-// IDEA: blur when overlay is active
 // TODO: hide navDOM when overlay is active
-// TODO: snazzy animation when deactivating overlay
 // TODO: socDOM, contactDOM, navDOm become sticky right before entering footer section
+// IDEA: when overlay active play with delay, scale and blur px to make achieve perspective
 
 /********** SCROLL TO TOP ON REFRESH PAGE **************/
 $(document).ready(function(){
@@ -20,10 +19,15 @@ document.addEventListener('scroll', () => {
 });
 
 
+/***************** LANDING SPLIT *********************/
+var slider = document.getElementById('arrows');
+
+
 /************* CONTACT ICONS ****************/
 var changeSoc = function() {
     var typoSectionTop = document.querySelector('.typography').getBoundingClientRect().top;
     var socDOM = document.querySelectorAll('.icons i');
+    // social icons change color as they pass the boundary between sections
     for (var i = 0; i < socDOM.length; i++) {
         if (socDOM[i].getBoundingClientRect().bottom > typoSectionTop) {
             socDOM[i].style.color = 'black';
@@ -38,23 +42,16 @@ var changeSoc = function() {
 var changeHamburger = function() {
     var hamburgerHeight = window.innerHeight - 32; // height of the viewport (= 1 section) - position top of hamburger
     var hamburgerDOM = document.getElementById('hamburger-svg');
-        if (document.body.scrollTop || document.documentElement.scrollTop > hamburgerHeight) {
-            hamburgerDOM.style.fill = 'var(--deep-sea)';
-        } else {
-            hamburgerDOM.style.fill = 'var(--turquoise)';
-        }
+    if (document.body.scrollTop || document.documentElement.scrollTop > hamburgerHeight) {
+        hamburgerDOM.style.fill = 'var(--deep-sea)';
+    } else {
+        hamburgerDOM.style.fill = 'var(--turquoise)';
+    }
 };
 
 
 /***************** SIDEBAR LIST ITEMS ***********************/
 var navDOM = document.querySelectorAll('.sidebar li');
-
-// navDOM.addEventListener('click', function () {
-//     navDOM.classList.remove('active-1', 'active-2');
-//
-// })
-
-// use vanilla
  $(navDOM).click(function() {
     $(navDOM).removeClass('active-2');
     $(navDOM).removeClass('active-1');
@@ -76,6 +73,7 @@ var changeInactiveNav = function() {
 var changeActiveNav = function() {
     var fullHeight = document.getElementById('landing').clientHeight; // a section height
     var y = window.pageYOffset;
+    // make list item active when the appropriate section occupies more than half of viewport (except contact section)
     if (y < fullHeight * 0.5) {
         $(navDOM[0]).addClass('active-1');
         $(navDOM[1]).removeClass('active-2');
@@ -91,7 +89,7 @@ var changeActiveNav = function() {
         $(navDOM[2]).removeClass('active-2');
         $(navDOM[3]).addClass('active-2');
         $(navDOM[4]).removeClass('active-2');
-    } else if (y >= fullHeight * 3.2) {
+    } else {
         $(navDOM[3]).removeClass('active-2');
         $(navDOM[4]).addClass('active-2');
     }
@@ -112,21 +110,34 @@ var changeContact = function() {
 
 
 /**************** ACTIVATING OVERLAY *********************/
-
 document.getElementById('hamburger-svg').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
     var navWrapDOM = document.querySelector('.nav-wrapper');
-    // var overlayListItems = document.querySelectorAll('.nav-inner-wrapper a li');
-    // let activeOverlay = false;
+    let typography = document.querySelector('.typography');
+    let prototype = document.querySelector('.uiprototype');
+    let branding = document.querySelector('.branding');
+    let contact = document.querySelector('.contact');
+    let socDOM = document.querySelector('.icons');
+    let contDOM = document.getElementById('rotated-contact');
+    let headerDOM = document.querySelector('.firefly-header h1');
+    var blurredArrayDOM = [typography, prototype, branding, contact, contDOM, headerDOM];
+
+    headerDOM.classList.add('translucent');
     overlayDOM.classList.add('overlay-active');
     navWrapDOM.classList.add('nav-wrapper-active');
-    // $(overlayListItems).addClass('animate');
+    socDOM.classList.add('translucent');
+    for (var i = 0; i < blurredArrayDOM.length; i++) {
+        blurredArrayDOM[i].classList.add('blurred');
+    }
     disable_scroll();
     overlayDOM.addEventListener('click', function() {
         overlayDOM.classList.remove('overlay-active');
         navWrapDOM.classList.remove('nav-wrapper-active');
-        // $(overlayListItems).removeClass('animate');
-        // let activeOverlay = true;
+        headerDOM.classList.remove('translucent');
+        socDOM.classList.remove('translucent');
+        for (var i = 0; i < blurredArrayDOM.length; i++) {
+            blurredArrayDOM[i].classList.remove('blurred');
+        }
         enable_scroll();
     })
 });
