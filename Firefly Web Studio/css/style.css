@@ -51,6 +51,7 @@ i {
     left: 5.5%;
     padding: 32px 0 15vh 0;
     z-index: 5;
+    transition: 0.4s;
 }
 
 
@@ -91,6 +92,10 @@ i {
     font-weight: lighter;
 }
 
+.flex {
+    display: flex;
+    flex-direction: row;
+}
 
 /************** NAVIGATION **************/
 
@@ -149,7 +154,7 @@ i {
 }
 
 .hamburger {
-    right: 7%;
+    right: 6%;
     top: 32px;
     width: 50px;
     height: 36px;
@@ -187,7 +192,7 @@ i {
 .blurred {
     filter: blur(1px);
     transition: 0.5s ease-in-out;
-    transition-delay: 0.7s;
+    transition-delay: 1s;
 }
 
 .overlay-active {
@@ -205,8 +210,9 @@ i {
     height: 100%;
     width: 30%;
     background-color: rgba(0, 115, 130, 0.7);
-    transition: 0.4s all ease-in-out;
-    transition-delay: 0.3s;
+    transition: all 2s cubic-bezier(.19, 1, .22, 1) .2s;
+    /* transition: 0.4s all ease-in-out;
+    transition-delay: 0.3s; */
     z-index: 6;
     opacity: 0;
     -webkit-transform: translate3d(100%, 0, 0);
@@ -244,9 +250,7 @@ i {
 }
 
 
-/***********************************/
-/****** SECTION SPLIT LAYOUT *******/
-/***********************************/
+/************* SECTION SPLIT LAYOUT ************/
 
 .column.middle {
     width: 84%;
@@ -287,7 +291,6 @@ i {
     letter-spacing: 1px;
 }
 
-/* TODO: add media query for flex-tiles */
 .flex-tiles {
     display: -webkit-box;
     display: flex;
@@ -347,23 +350,36 @@ i {
 }
 
 .left {
+    position: absolute;
+    left: 0;
     background-color: white;
     height: 100vh;
     width: 50%;
-    float: left;
-    z-index: 0;
+    z-index: 1;
 }
 
 .right {
+    position: absolute;
+    right: 0;
     background-color: var(--light-gray);
     height: 100vh;
     width: 50%;
-    float: left;
-    z-index: 0;
+    z-index: 1;
+}
+
+.gutter {
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    display: block;
+    /* background-color: var(--deep-sea); */
+    top: 0;
+    left: 50%;
+    z-index: 3;
 }
 
 .landing-header {
-    font-size: 12rem;
+    font-size: calc(11vw);
     color: var(--deep-sea);
 }
 
@@ -379,14 +395,15 @@ i {
 
 #landing-code-header {
     position: absolute;
-    top: 15%;
-    right: 50%;
+    top: calc(15% - 2vh);
+    right: 0;
     margin-right: -10px;
+    z-index: 4;
 }
 
 #landing-design-header {
     position: absolute;
-    bottom: 25%;
+    bottom: calc(25% - 2vh);
     margin-left: -13px;
 }
 
@@ -398,6 +415,8 @@ i {
     font-size: 1.9rem;
     font-weight: lighter;
     color: #011519;
+    z-index: 4;
+    transition: 0.4s;
 }
 
 #grass {
@@ -505,4 +524,56 @@ i {
 
 .logo p {
     margin-left: 17px;
+}
+
+
+/* @media screen and (max-width: 1200px) {
+    .landing-header {
+        font-size: 8rem;
+    }
+} */
+
+@media (max-height: 700px) {
+    #crocs {
+        opacity: 0;
+    }
+    .firefly-header h1{
+        opacity: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        top: 50%;
+        right: 10px;
+    }
+    #rotated-contact {
+        left: -25px;
+    }
+    .icons {
+        left: 20px;
+    }
+}
+
+@media (max-width: 1300px) {
+    .flex-tiles {
+        display: none;
+    }
+    .split-right-header {
+        white-space: normal;
+    }
+}
+
+@media (max-height: 760px) {
+    .sidebar {
+        top: 50%;
+    }
+
+    .flex-tiles {
+        display: none;
+    }
+
+    .more-projects {
+        margin-top: 10%;
+    }
 }
