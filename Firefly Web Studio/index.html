@@ -16,9 +16,7 @@
 
   <section class="landing" id="landing">
     <p id="crocs">There are a lot of crocodiles in the pond but we can light the way!</p>
-    <img id="arrows" src="img/arrows.png" alt="">
-    <div class="left">
-        <img id="grass" src="img/grass.png" alt="">
+    <div class="left panel">
         <div class="firefly-header">
             <h1>Firefly</h1>
         </div>
@@ -31,7 +29,11 @@
            <a href="#"><i class="fab fa-facebook-f social-media"></i></a>
         </div>
     </div>
-    <div class="right">
+    <div class="handle">
+        <!-- onmousedown prevent inbuilt browser Drag'n'drop   -->
+        <img id="arrows" src="img/arrows.png" alt="" onmousedown="return false">
+    </div>
+    <div class="right panel">
         <h1 id="landing-design-header"class="landing-header">Design</h1>
         <div class="hamburger">
             <?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg id="hamburger-svg" height="42px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="42px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
@@ -46,6 +48,7 @@
                 <a href="#contact"><li class="inactive-1"></li></a>
             </ul>
         </nav>
+        <img id="grass" src="img/grass.png" alt="">
     </div>
     <div class="overlay"></div>
     <div class="nav-wrapper">
