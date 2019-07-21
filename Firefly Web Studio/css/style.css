@@ -338,35 +338,40 @@ i {
 /**************** LANDING *******************/
 
 .landing {
-    height: 100vh;
-    width: 100%;
     position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.left {
+.panel {
     position: absolute;
-    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.left{
+    z-index: 1;
+    position: absolute;
     background-color: white;
-    height: 100vh;
-    width: 50%;
-    z-index: 1;
+    left: 0;
 }
 
-.right {
+.right{
+    z-index: 2;
     position: absolute;
-    right: 0;
     background-color: var(--light-gray);
-    height: 100vh;
+    right: 0;
     width: 50%;
-    z-index: 1;
 }
 
-.gutter {
-    position: absolute;
+.handle {
     height: 100%;
-    width: 1px;
+    position: absolute;
     display: block;
-    /* background-color: var(--deep-sea); */
+    background-color: var(--deep-sea);
+    width: 3px;
     top: 0;
     left: 50%;
     z-index: 3;
@@ -391,13 +396,14 @@ i {
 #landing-code-header {
     position: absolute;
     top: 15%;
-    right: 0;
+    left: 340px; /* fix */
     margin-right: -5px;
     z-index: 4;
 }
 
 #landing-design-header {
     position: absolute;
+    right: 290px; /* fix */
     bottom: 25%;
     margin-left: -5px;
 }
