@@ -20,7 +20,79 @@ document.addEventListener('scroll', () => {
 
 
 /***************** LANDING SPLIT *********************/
-var slider = document.getElementById('arrows');
+var container = document.querySelector('.landing'),
+    left = container.querySelector('.left'),
+    right = container.querySelector('.right'),
+    arrows = container.querySelector('#arrows'),
+    handle = container.querySelector('.handle');    
+ 
+var dragActive = false;
+var currentX;
+var initialX;
+var xOffset = 0;
+
+container.addEventListener("touchstart", dragStart, false);
+container.addEventListener("touchend", dragEnd, false);
+container.addEventListener("touchmove", drag, false);
+
+container.addEventListener("mousedown", dragStart, false);
+container.addEventListener("mouseup", dragEnd, false);
+container.addEventListener("mousemove", drag, false);
+
+function dragStart(e){
+    if(e.type === "touchstart"){
+        initialX = e.touches[0].clientX - xOffset;
+    } else {
+        initialX = e.clientX - xOffset;
+    }
+
+    if(e.target === arrows){
+        dragActive = true;
+    }
+}
+
+function dragEnd(e){
+    initialX = currentX;
+
+    dragActive = false;
+}
+
+function drag(e){
+    if(dragActive){
+        e.preventDefault();
+
+        if(e.type === 'touchmove'){
+            currentX = e.touches[0].clientX - initialX;
+        } else {
+            currentX = e.clientX - initialX;
+        }
+
+        xOffset = currentX;
+
+        setTranslate(currentX, handle);
+        resizePanels(event, left, right);
+    }
+}
+
+function setTranslate(xPos, el, left, right) {
+    el.style.transform = "translate3d(" + xPos + "px, 0, 0)";
+}
+
+function resizePanels(event, left, right) {
+    var w = window.innerWidth;
+    var center = w / 2;
+
+    left.style.width = event.clientX + 'px';
+    right.style.width = (w - event.clientX - 19) + 'px';
+
+    if(event.clientX > center){
+        left.style.zIndex = 2;
+        right.style.zIndex = 1;
+    } else {
+        left.style.zIndex = 1;
+        right.style.zIndex = 2;
+    }
+}
 
 
 /************* CONTACT ICONS ****************/
