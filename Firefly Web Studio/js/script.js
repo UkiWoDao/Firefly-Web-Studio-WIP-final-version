@@ -2,98 +2,137 @@
 // TODO: hide navDOM when overlay is active
 // TODO: socDOM, contactDOM, navDOm become sticky right before entering footer section
 // IDEA: when overlay active play with delay, scale and blur px to make achieve perspective
+// FIX: panel width on window resize
 
-/********** SCROLL TO TOP ON REFRESH PAGE **************/
-$(document).ready(function(){
-    $(this).scrollTop(0);
-});
+// init page functionality on dom load
+window.addEventListener('DOMContentLoaded', () => {
+    // add scroll events
+    document.addEventListener('scroll', () => {
+        scrollEvents();
+    });
+    runDrag();
+})
 
-
-/*********** SCROLL EVENTS **********/
-document.addEventListener('scroll', () => {
+// scroll related functionality
+var scrollEvents = () => {
     changeHamburger();
     changeInactiveNav();
     changeActiveNav();
     changeSoc();
     changeContact();
-});
-
-
-/***************** LANDING SPLIT *********************/
-var container = document.querySelector('.landing'),
-    left = container.querySelector('.left'),
-    right = container.querySelector('.right'),
-    arrows = container.querySelector('#arrows'),
-    handle = container.querySelector('.handle');    
- 
-var dragActive = false;
-var currentX;
-var initialX;
-var xOffset = 0;
-
-container.addEventListener("touchstart", dragStart, false);
-container.addEventListener("touchend", dragEnd, false);
-container.addEventListener("touchmove", drag, false);
-
-container.addEventListener("mousedown", dragStart, false);
-container.addEventListener("mouseup", dragEnd, false);
-container.addEventListener("mousemove", drag, false);
-
-function dragStart(e){
-    if(e.type === "touchstart"){
-        initialX = e.touches[0].clientX - xOffset;
-    } else {
-        initialX = e.clientX - xOffset;
-    }
-
-    if(e.target === arrows){
-        dragActive = true;
-    }
 }
 
-function dragEnd(e){
-    initialX = currentX;
-
-    dragActive = false;
+// scroll to top on refresh
+window.onbeforeunload = () => {
+    window.scrollTo(0, 0);
 }
 
-function drag(e){
-    if(dragActive){
-        e.preventDefault();
-
-        if(e.type === 'touchmove'){
-            currentX = e.touches[0].clientX - initialX;
-        } else {
-            currentX = e.clientX - initialX;
+// encapsulate DOM data
+var DOM = (() => {
+    // grab DOM elements
+    var domElems = {
+        container: document.querySelector('.landing'),
+        left : document.querySelector('.left'),
+        right : document.querySelector('.right'),
+        arrows : document.querySelector('#arrows'),
+        handle : document.querySelector('.handle')
+    };
+    return {
+        // dom elements getter
+        getDOMelems: function(){
+            return domElems;
         }
-
-        xOffset = currentX;
-
-        setTranslate(currentX, handle);
-        resizePanels(event, left, right);
     }
-}
+})();
 
-function setTranslate(xPos, el, left, right) {
-    el.style.transform = "translate3d(" + xPos + "px, 0, 0)";
-}
+// dynamic split screen related code
+var runDrag = () => {
+    var dragActive = false, currentX, initialX, xOffset = 0;
 
-function resizePanels(event, left, right) {
-    var w = window.innerWidth;
-    var center = w / 2;
+    // get target element
+    var elems = DOM.getDOMelems();
+    var target = elems.container;
 
-    left.style.width = event.clientX + 'px';
-    right.style.width = (w - event.clientX - 19) + 'px';
+    target.addEventListener("touchstart", dragStart, false);
+    target.addEventListener("touchmove", drag, false);
+    target.addEventListener("touchend", dragEnd, false);
+    
+    target.addEventListener("mousedown", dragStart, false);
+    target.addEventListener("mousemove", drag, false);
+    target.addEventListener("mouseup", dragEnd, false);
 
-    if(event.clientX > center){
-        left.style.zIndex = 2;
-        right.style.zIndex = 1;
-    } else {
-        left.style.zIndex = 1;
-        right.style.zIndex = 2;
+    function dragStart(e){
+        if(e.type === "touchstart"){
+            initialX = e.touches[0].clientX - xOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+        }
+    
+        if(e.target === arrows){
+            dragActive = true;
+        }
     }
-}
+    
+    function dragEnd(e){
+        initialX = currentX;
+    
+        dragActive = false;
+    }
+    
+    function drag(e){
+        if(dragActive){
+            e.preventDefault();
+    
+            if(e.type === 'touchmove'){
+                currentX = e.touches[0].clientX - initialX;
+            } else {
+                currentX = e.clientX - initialX;
+            }
+            
+            // make handle stay
+            xOffset = currentX;
+    
+            setTranslate(currentX, elems.handle);
+            resizePanels(event, elems.left, elems.right);
+        }
+    }
+    
+    function setTranslate(xPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, 0, 0)";
+    }
+    
+    function resizePanels(event, left, right) {
+        var w = window.innerWidth;
+        var center = w / 2;
+    
+        left.style.width = event.clientX + 'px';
+        right.style.width = (w - event.clientX - 19) + 'px';
+    
+        if(event.clientX > center){
+            left.style.zIndex = 2;
+            right.style.zIndex = 1;
+        } else {
+            left.style.zIndex = 1;
+            right.style.zIndex = 2;
+        }
+    }
+};
 
+/*********** NON-DRAG ONMOUSEMOVE HANDLE VARIANT ************/
+// container.addEventListener('mousemove', function(e){
+//     if(e.target === arrows){
+//         handle.style.left = e.clientX + 'px';
+//         left.style.width = e.clientX + 'px';
+//         right.style.width = (w - e.clientX - 19) + 'px';
+//         if(e.clientX > center){
+//             left.style.zIndex = 2;
+//             right.style.zIndex = 1;
+//         } else {
+//             left.style.zIndex = 1;
+//             right.style.zIndex = 2;
+//         }
+//     }
+// })
 
 /************* CONTACT ICONS ****************/
 var changeSoc = function() {
@@ -122,7 +161,7 @@ var changeHamburger = function() {
 };
 
 
-/***************** SIDEBAR LIST ITEMS ***********************/
+/****************** SIDEBAR LIST ITEMS ***********************/
 var navDOM = document.querySelectorAll('.sidebar li');
  $(navDOM).click(function() {
     $(navDOM).removeClass('active-2');
@@ -168,7 +207,7 @@ var changeActiveNav = function() {
 }
 
 
-/*************** ASIDE CONTACT ********************/
+/****************** ASIDE CONTACT ********************/
 var changeContact = function() {
     var contDOM = document.getElementById('rotated-contact');
     var halfHeight = window.innerHeight / 2;
@@ -181,7 +220,7 @@ var changeContact = function() {
 };
 
 
-/**************** ACTIVATING OVERLAY *********************/
+/***************** ACTIVATING OVERLAY *********************/
 document.getElementById('hamburger-svg').addEventListener('click', function() {
     var overlayDOM = document.querySelector('.overlay');
     var navWrapDOM = document.querySelector('.nav-wrapper');
@@ -215,7 +254,7 @@ document.getElementById('hamburger-svg').addEventListener('click', function() {
 });
 
 
-/************* PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
+/************** PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
 function wheel(e) {
     preventDefault(e);
 }
@@ -240,9 +279,3 @@ function enable_scroll() {
     }
     window.onmousewheel = document.onmousewheel = document.onkeydown = null;
 }
-
-
-
-// var winH = window.innerHeight;
-// document.documentElement.clientHeight
-// document.body.clientHeight;
