@@ -10,14 +10,16 @@ window.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('scroll', () => {
         scrollEvents();
     });
-    runDrag();
+    initDrag();
+    activeOverlay();
+    activeLiClick();
 })
 
 // scroll related functionality
 var scrollEvents = () => {
     changeHamburger();
-    changeInactiveNav();
-    changeActiveNav();
+    inactiveLiScroll();
+    activeLiScroll();
     changeSoc();
     changeContact();
 }
@@ -35,7 +37,19 @@ var DOM = (() => {
         left : document.querySelector('.left'),
         right : document.querySelector('.right'),
         arrows : document.querySelector('#arrows'),
-        handle : document.querySelector('.handle')
+        handle : document.querySelector('.handle'),
+        hamb: document.getElementById('hamburger-svg'),
+        overlay: document.querySelector('.overlay'),
+        navWrap: document.querySelector('.nav-wrapper'),
+        typo: document.querySelector('.typography'),
+        proto: document.querySelector('.uiprototype'),
+        branding: document.querySelector('.branding'),
+        contact: document.querySelector('.contact'),
+        rotContact: document.getElementById('rotated-contact'),
+        socIcons: document.querySelector('.icons'),
+        allSocIcon: document.querySelectorAll('.icons i'),
+        header: document.querySelector('.firefly-header h1'),
+        allLi: document.querySelectorAll('.sidebar li')
     };
     return {
         // dom elements getter
@@ -46,7 +60,8 @@ var DOM = (() => {
 })();
 
 // dynamic split screen related code
-var runDrag = () => {
+function initDrag() {
+    // handle flag and position variables
     var dragActive = false, currentX, initialX, xOffset = 0;
 
     // get target element
@@ -135,124 +150,233 @@ var runDrag = () => {
 // })
 
 /************* CONTACT ICONS ****************/
-var changeSoc = function() {
-    var typoSectionTop = document.querySelector('.typography').getBoundingClientRect().top;
-    var socDOM = document.querySelectorAll('.icons i');
-    // social icons change color as they pass the boundary between sections
-    for (var i = 0; i < socDOM.length; i++) {
-        if (socDOM[i].getBoundingClientRect().bottom > typoSectionTop) {
-            socDOM[i].style.color = 'black';
+function changeSoc() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+    
+    // grab boundary between landing page and typography section
+    var typoTop = elems.typo.getBoundingClientRect().top;
+
+    // get target element
+    var icons = elems.allSocIcon;
+
+    // social icons change color as they pass the boundary
+    for (var i = 0; i < icons.length; i++) {
+        if (icons[i].getBoundingClientRect().bottom > typoTop) {
+            icons[i].style.color = 'black';
         } else {
-            socDOM[i].style.color = 'var(--turquoise)';
+            icons[i].style.color = 'var(--turquoise)';
         }
     }
 };
 
 
 /************** MENU ICON *****************/
-var changeHamburger = function() {
-    var hamburgerHeight = window.innerHeight - 32; // height of the viewport (= 1 section) - position top of hamburger
-    var hamburgerDOM = document.getElementById('hamburger-svg');
-    if (document.body.scrollTop || document.documentElement.scrollTop > hamburgerHeight) {
-        hamburgerDOM.style.fill = 'var(--deep-sea)';
+function changeHamburger() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+
+    // get target element
+    var hamb = elems.hamb;
+
+    // shorthands
+    var docEl = document.documentElement;
+    var docBody = document.body;
+
+    // get hamburger height
+    var hambH = window.innerHeight - 32; // height of the viewport (= 1 section) - position top of hamburger
+
+    if (docBody.scrollTop || docEl.scrollTop > hambH) {
+        hamb.style.fill = 'var(--deep-sea)';
     } else {
-        hamburgerDOM.style.fill = 'var(--turquoise)';
+        hamb.style.fill = 'var(--turquoise)';
     }
 };
 
 
 /****************** SIDEBAR LIST ITEMS ***********************/
-var navDOM = document.querySelectorAll('.sidebar li');
- $(navDOM).click(function() {
-    $(navDOM).removeClass('active-2');
-    $(navDOM).removeClass('active-1');
-    $(this).filter($(navDOM[0])).toggleClass('active-1');
-    $(this).not(navDOM[0]).toggleClass('active-2');
-});
+// var navDOM = document.querySelectorAll('.sidebar li');
+//  $(navDOM).click(function() {
+//     $(navDOM).removeClass('active-2');
+//     $(navDOM).removeClass('active-1');
+//     $(this).filter($(navDOM[0])).toggleClass('active-1');
+//     $(this).not(navDOM[0]).toggleClass('active-2');
+// });
 
-var changeInactiveNav = function() {
-    var typoSectionTop = document.querySelector('.typography').getBoundingClientRect().top;
-    for (var i = 0; i < navDOM.length; i++) {
-        if (navDOM[i].getBoundingClientRect().bottom > typoSectionTop && !navDOM[i].classList.contains('active-1', 'active-2')) {
-            navDOM[i].classList.replace('inactive-1', 'inactive-2');
-        } else if (navDOM[i].getBoundingClientRect().bottom < typoSectionTop && !navDOM[i].classList.contains('active-1', 'active-2')){
-            navDOM[i].classList.replace('inactive-2', 'inactive-1');
+function activeLiClick() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+
+    // get target element
+    var li = elems.allLi;
+
+    var liArr = nodeListToArray(li);
+    var liExceptFirst = liArr.shift();
+
+    // var liArrExceptFirst = exceptFirst(liArr);
+
+    // add event listener on each li element
+    [].forEach.call(li, (el) => {
+        el.addEventListener('click', () => {
+            removeClass(li, 'active-2');
+            removeClass(li, 'active-1');
+            liArr[0].classList.toggle('active-1');
+            liExceptFirst.classList.toggle('active-2');
+        });
+    });
+
+// function removes class from all node list items
+function removeClass (nodeList, className) {
+    [].forEach.call(nodeList, function(el) {
+        el.classList.remove(className);
+    })
+}
+
+function nodeListToArray(nodeList) {
+    var nodeArray = [];
+    for (var i = 0; i < nodeList.length; i++) {
+        nodeArray.push(nodeList[i]);
+    }
+    return nodeArray;
+}
+
+function exceptFirst(array) {
+    var nodeArray = array.shift();
+    return nodeArray;
+}
+    // //jQuery version
+    // $(navDOM).click(function() {
+    //     $(navDOM).removeClass('active-2');
+    //     $(navDOM).removeClass('active-1');
+    //     $(this).filter($(navDOM[0])).toggleClass('active-1');
+    //     $(this).not(navDOM[0]).toggleClass('active-2');
+    // })
+}
+
+function inactiveLiScroll() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+
+    // get target element
+    var typoTop = elems.typo.getBoundingClientRect().top;
+
+    // shorthand for sidebar li
+    var li = elems.allLi;
+
+    // apply different styling to list items depending on scroll position
+    for (var i = 0; i < li.length; i++) {
+        if (li[i].getBoundingClientRect().bottom > typoTop) {
+            if(!li[i].classList.contains('active-1', 'active-2')) {
+                li[i].classList.replace('inactive-1', 'inactive-2')
+            };
+        } else if (li[i].getBoundingClientRect().bottom < typoTop) {
+            if (!li[i].classList.contains('active-1', 'active-2')) {
+                li[i].classList.replace('inactive-2', 'inactive-1')
+            };
         }
     }
 };
 
-var changeActiveNav = function() {
-    var fullHeight = document.getElementById('landing').clientHeight; // a section height
+function activeLiScroll() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+
+    // get height of a section (they are equal)
+    var fullH = elems.container.clientHeight;
+
+    // vertical scroll amount
     var y = window.pageYOffset;
+
+    // shorthand for li node list
+    var li = elems.allLi;
+
+    // section boundary heights
+    var h05 = fullH * 0.5,
+        h15 = fullH * 1.5,
+        h25 = fullH * 2.5,
+        h32 = fullH * 3.2; 
+
     // make list item active when the appropriate section occupies more than half of viewport (except contact section)
-    if (y < fullHeight * 0.5) {
-        $(navDOM[0]).addClass('active-1');
-        $(navDOM[1]).removeClass('active-2');
-    } else if (y >= fullHeight * 0.5 && y < fullHeight * 1.5) {
-        $(navDOM[0]).removeClass('active-1')
-        $(navDOM[1]).addClass('active-2');
-        $(navDOM[2]).removeClass('active-2');
-    } else if (y >= fullHeight * 1.5 && y < fullHeight * 2.5) {
-        $(navDOM[1]).removeClass('active-2');
-        $(navDOM[2]).addClass('active-2');
-        $(navDOM[3]).removeClass('active-2');
-    } else if (y >= fullHeight * 2.5 && y < fullHeight * 3.2) {
-        $(navDOM[2]).removeClass('active-2');
-        $(navDOM[3]).addClass('active-2');
-        $(navDOM[4]).removeClass('active-2');
+    if (y < h05) {
+        li[0].classList.add('active-1');
+        li[1].classList.remove('active-2');
+    } else if (y >= h05 && y < h15) {
+        li[0].classList.remove('active-1')
+        li[1].classList.add('active-2');
+        li[2].classList.remove('active-2');
+    } else if (y >= h15 && y < h25) {
+        li[1].classList.remove('active-2');
+        li[2].classList.add('active-2');
+        li[3].classList.remove('active-2');
+    } else if (y >= h25 && y < h32) {
+        li[2].classList.remove('active-2');
+        li[3].classList.add('active-2');
+        li[4].classList.remove('active-2');
     } else {
-        $(navDOM[3]).removeClass('active-2');
-        $(navDOM[4]).addClass('active-2');
+        li[3].classList.remove('active-2');
+        li[4].classList.add('active-2');
     }
 }
 
 
 /****************** ASIDE CONTACT ********************/
-var changeContact = function() {
-    var contDOM = document.getElementById('rotated-contact');
-    var halfHeight = window.innerHeight / 2;
-    if (document.body.scrollTop || document.documentElement.scrollTop > halfHeight) {
-           contDOM.style.color = 'black';
+function changeContact() {
+    // grab dom elements
+    var elems = DOM.getDOMelems();
+
+    // get target element color property
+    var cont = elems.rotContact;
+    var halfH = window.innerHeight / 2;
+
+    // get document root node
+    var doc = document.documentElement;
+
+    // get document body
+    var body = document.body;
+
+    if (body.scrollTop || doc.scrollTop > halfH) {
+           cont.style.color = 'black';
     }
-    if (document.body.scrollTop || document.documentElement.scrollTop < halfHeight) {
-          contDOM.style.color = 'var(--turquoise)';
+    if (body.scrollTop || doc.scrollTop < halfH) {
+           cont.style.color = 'var(--turquoise)';
     }
 };
 
 
 /***************** ACTIVATING OVERLAY *********************/
-document.getElementById('hamburger-svg').addEventListener('click', function() {
-    var overlayDOM = document.querySelector('.overlay');
-    var navWrapDOM = document.querySelector('.nav-wrapper');
-    let typography = document.querySelector('.typography');
-    let prototype = document.querySelector('.uiprototype');
-    let branding = document.querySelector('.branding');
-    let contact = document.querySelector('.contact');
-    let socDOM = document.querySelector('.icons');
-    let contDOM = document.getElementById('rotated-contact');
-    let headerDOM = document.querySelector('.firefly-header h1');
-    var blurredArrayDOM = [typography, prototype, branding, contact, contDOM, headerDOM];
+function activeOverlay() {
+    document.getElementById('hamburger-svg').addEventListener('click', () => {
+        // get dom elements
+        var elems = DOM.getDOMelems();
+    
+        // create array of elements that will be blurred in animation
+        var blurDOMarr = [elems.typo, elems.proto, elems.branding, elems.contact, elems.rotContact, elems.header];
+    
+        // animation start
+        elems.header.classList.add('translucent');
+        elems.overlay.classList.add('overlay-active');
+        elems.navWrap.classList.add('nav-wrapper-active');
+        elems.socIcons.classList.add('translucent');
 
-    headerDOM.classList.add('translucent');
-    overlayDOM.classList.add('overlay-active');
-    navWrapDOM.classList.add('nav-wrapper-active');
-    socDOM.classList.add('translucent');
-    for (var i = 0; i < blurredArrayDOM.length; i++) {
-        blurredArrayDOM[i].classList.add('blurred');
-    }
-    disable_scroll();
-    overlayDOM.addEventListener('click', function() {
-        overlayDOM.classList.remove('overlay-active');
-        navWrapDOM.classList.remove('nav-wrapper-active');
-        headerDOM.classList.remove('translucent');
-        socDOM.classList.remove('translucent');
-        for (var i = 0; i < blurredArrayDOM.length; i++) {
-            blurredArrayDOM[i].classList.remove('blurred');
+        for (var i = 0; i < blurDOMarr.length; i++) {
+            blurDOMarr[i].classList.add('blurred');
         }
-        enable_scroll();
-    })
-});
+        disable_scroll();
+    
+        // animation end
+        elems.overlay.addEventListener('click', () => {
+            elems.overlay.classList.remove('overlay-active');
+            elems.navWrap.classList.remove('nav-wrapper-active');
+            elems.header.classList.remove('translucent');
+            elems.socIcons.classList.remove('translucent');
 
+            for (var i = 0; i < blurDOMarr.length; i++) {
+                blurDOMarr[i].classList.remove('blurred');
+            }
+            enable_scroll();
+        })
+    });
+}
 
 /************** PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
 function wheel(e) {
