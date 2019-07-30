@@ -2,7 +2,6 @@
 // TODO: hide navDOM when overlay is active
 // TODO: socDOM, contactDOM, navDOm become sticky right before entering footer section
 // IDEA: when overlay active play with delay, scale and blur px to make achieve perspective
-// FIX: panel width on window resize
 
 // init page functionality on dom load
 window.addEventListener('DOMContentLoaded', () => {
@@ -23,8 +22,6 @@ var scrollEvents = () => {
     changeSoc();
     changeContact();
 }
-
-window.addEventListener("resize", toDefaultPos);
 
 // scroll to top on refresh
 window.onbeforeunload = () => {
@@ -69,6 +66,27 @@ function initDrag() {
     // get target element
     var elems = DOM.getDOMelems();
     var target = elems.container;
+
+    window.addEventListener("resize", function() {
+        // get DOM elements
+        var elems = DOM.getDOMelems();
+
+        var w = window.innerWidth;
+        var half = w / 2;
+
+        // handle default position
+        elems.handle.style.left = half + 'px';
+        elems.handle.style.transform = "translate(-50%)";
+        
+        // panels default position
+        elems.left.style.width = half + 'px';
+        elems.right.style.width = (half - 19) + 'px';
+
+        elems.left.style.zIndex = 1;
+        elems.right.style.zIndex = 1;
+
+        currentX = initialX = xOffset = 0;
+    });
 
     target.addEventListener("touchstart", dragStart, false);
     target.addEventListener("touchmove", drag, false);
@@ -139,41 +157,6 @@ function resizePanels(e) {
     }
 }
 
-function toDefaultPos() {
-    // get DOM elements
-    var elems = DOM.getDOMelems();
-
-    var w = window.innerWidth;
-    var half = w / 2;
-
-    // handle default position
-    elems.handle.style.left = half + 'px';
-    elems.handle.style.transform = "translate(-50%)";
-    
-    // panels default position
-    elems.left.style.width = half + 'px';
-    elems.right.style.width = (half - 19) + 'px';
-
-    elems.left.style.zIndex = 1;
-    elems.right.style.zIndex = 1;
-}
-
-/*********** NON-DRAG ONMOUSEMOVE HANDLE VARIANT ************/
-// container.addEventListener('mousemove', function(e){
-//     if(e.target === arrows){
-//         handle.style.left = e.clientX + 'px';
-//         left.style.width = e.clientX + 'px';
-//         right.style.width = (w - e.clientX - 19) + 'px';
-//         if(e.clientX > center){
-//             left.style.zIndex = 2;
-//             right.style.zIndex = 1;
-//         } else {
-//             left.style.zIndex = 1;
-//             right.style.zIndex = 2;
-//         }
-//     }
-// })
-
 /************* CONTACT ICONS ****************/
 function changeSoc() {
     // grab dom elements
@@ -228,55 +211,63 @@ function changeHamburger() {
 //     $(this).not(navDOM[0]).toggleClass('active-2');
 // });
 
+// function activeLiClick() {
+//     // grab dom elements
+//     var elems = DOM.getDOMelems();
+
+//     // get target element
+//     var li = elems.allLi;
+
+//     var liArr = nodeListToArray(li);
+//     var liExceptFirst = liArr.shift();
+
+//     // var liArrExceptFirst = exceptFirst(liArr);
+
+//     // add event listener on each li element
+//     [].forEach.call(li, (el) => {
+//         el.addEventListener('click', () => {
+//             removeClass(li, 'active-2');
+//             removeClass(li, 'active-1');
+//             liArr[0].classList.toggle('active-1');
+//             liExceptFirst.classList.toggle('active-2');
+//         });
+//     });
+// }
+
+// // function removes class from all node list items
+// function removeClass (nodeList, className) {
+//     [].forEach.call(nodeList, function(el) {
+//         el.classList.remove(className);
+//     })
+// }
+
+// function nodeListToArray(nodeList) {
+//     var nodeArray = [];
+//     for (var i = 0; i < nodeList.length; i++) {
+//         nodeArray.push(nodeList[i]);
+//     }
+//     return nodeArray;
+// }
+
+// function exceptFirst(array) {
+//     var nodeArray = array.shift();
+//     return nodeArray;
+// }
+
 function activeLiClick() {
     // grab dom elements
     var elems = DOM.getDOMelems();
-
-    // get target element
     var li = elems.allLi;
 
-    var liArr = nodeListToArray(li);
-    var liExceptFirst = liArr.shift();
-
-    // var liArrExceptFirst = exceptFirst(liArr);
-
-    // add event listener on each li element
-    [].forEach.call(li, (el) => {
-        el.addEventListener('click', () => {
-            removeClass(li, 'active-2');
-            removeClass(li, 'active-1');
-            liArr[0].classList.toggle('active-1');
-            liExceptFirst.classList.toggle('active-2');
-        });
-    });
-
-// function removes class from all node list items
-function removeClass (nodeList, className) {
-    [].forEach.call(nodeList, function(el) {
-        el.classList.remove(className);
+    $(li).click(function() {
+        $(li).removeClass('active-2');
+        $(li).removeClass('active-1');
+        $(this).filter($(li[0])).toggleClass('active-1');
+        $(this).not(li[0]).toggleClass('active-2');
     })
 }
+//jQuery version
 
-function nodeListToArray(nodeList) {
-    var nodeArray = [];
-    for (var i = 0; i < nodeList.length; i++) {
-        nodeArray.push(nodeList[i]);
-    }
-    return nodeArray;
-}
-
-function exceptFirst(array) {
-    var nodeArray = array.shift();
-    return nodeArray;
-}
-    // //jQuery version
-    // $(navDOM).click(function() {
-    //     $(navDOM).removeClass('active-2');
-    //     $(navDOM).removeClass('active-1');
-    //     $(this).filter($(navDOM[0])).toggleClass('active-1');
-    //     $(this).not(navDOM[0]).toggleClass('active-2');
-    // })
-}
 
 function inactiveLiScroll() {
     // grab dom elements
