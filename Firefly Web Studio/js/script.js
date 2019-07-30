@@ -24,6 +24,8 @@ var scrollEvents = () => {
     changeContact();
 }
 
+window.addEventListener("resize", toDefaultPos);
+
 // scroll to top on refresh
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
@@ -53,7 +55,7 @@ var DOM = (() => {
     };
     return {
         // dom elements getter
-        getDOMelems: function(){
+        getDOMelems: function() {
             return domElems;
         }
     }
@@ -61,7 +63,7 @@ var DOM = (() => {
 
 // dynamic split screen related code
 function initDrag() {
-    // handle flag and position variables
+    // handle element flag and position variables
     var dragActive = false, currentX, initialX, xOffset = 0;
 
     // get target element
@@ -76,26 +78,26 @@ function initDrag() {
     target.addEventListener("mousemove", drag, false);
     target.addEventListener("mouseup", dragEnd, false);
 
-    function dragStart(e){
+    function dragStart(e) {
         if(e.type === "touchstart"){
             initialX = e.touches[0].clientX - xOffset;
         } else {
             initialX = e.clientX - xOffset;
         }
     
-        if(e.target === arrows){
+        if(e.target === arrows) {
             dragActive = true;
         }
     }
     
-    function dragEnd(e){
+    function dragEnd() {
         initialX = currentX;
     
-        dragActive = false;
+        dragActive = false;   
     }
     
-    function drag(e){
-        if(dragActive){
+    function drag(e) {
+        if(dragActive) {
             e.preventDefault();
     
             if(e.type === 'touchmove'){
@@ -104,34 +106,57 @@ function initDrag() {
                 currentX = e.clientX - initialX;
             }
             
-            // make handle stay
             xOffset = currentX;
     
-            setTranslate(currentX, elems.handle);
-            resizePanels(event, elems.left, elems.right);
+            moveHandle(currentX, elems.handle);
+            resizePanels(e, currentX);
         }
     }
     
-    function setTranslate(xPos, el) {
+    // make handle stay after dragging
+    function moveHandle(xPos, el) {
         el.style.transform = "translate3d(" + xPos + "px, 0, 0)";
     }
-    
-    function resizePanels(event, left, right) {
-        var w = window.innerWidth;
-        var center = w / 2;
-    
-        left.style.width = event.clientX + 'px';
-        right.style.width = (w - event.clientX - 19) + 'px';
-    
-        if(event.clientX > center){
-            left.style.zIndex = 2;
-            right.style.zIndex = 1;
-        } else {
-            left.style.zIndex = 1;
-            right.style.zIndex = 2;
-        }
-    }
 };
+
+function resizePanels(e) {
+    // get DOM elements
+    var elems = DOM.getDOMelems();
+
+    var w = window.innerWidth;
+    var center = w / 2;
+
+    elems.left.style.width = e.clientX + 'px';
+    elems.right.style.width = (w - e.clientX - 19) + 'px';
+    
+    // make larger section on top
+    if(e.clientX > center){
+        elems.left.style.zIndex = 2;
+        elems.right.style.zIndex = 1;
+    } else {
+        elems.left.style.zIndex = 1;
+        elems.right.style.zIndex = 2;
+    }
+}
+
+function toDefaultPos() {
+    // get DOM elements
+    var elems = DOM.getDOMelems();
+
+    var w = window.innerWidth;
+    var half = w / 2;
+
+    // handle default position
+    elems.handle.style.left = half + 'px';
+    elems.handle.style.transform = "translate(-50%)";
+    
+    // panels default position
+    elems.left.style.width = half + 'px';
+    elems.right.style.width = (half - 19) + 'px';
+
+    elems.left.style.zIndex = 1;
+    elems.right.style.zIndex = 1;
+}
 
 /*********** NON-DRAG ONMOUSEMOVE HANDLE VARIANT ************/
 // container.addEventListener('mousemove', function(e){
