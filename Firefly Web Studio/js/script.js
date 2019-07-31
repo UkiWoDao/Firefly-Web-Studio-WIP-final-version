@@ -19,7 +19,7 @@ var scrollEvents = () => {
     changeHamburger();
     inactiveLiScroll();
     activeLiScroll();
-    changeSoc();
+    changeSocIcons();
     changeContact();
 }
 
@@ -29,7 +29,7 @@ window.onbeforeunload = () => {
 }
 
 // encapsulate DOM data
-var DOM = (() => {
+var globalVars = (() => {
     // grab DOM elements
     var domElems = {
         container: document.querySelector('.landing'),
@@ -50,42 +50,54 @@ var DOM = (() => {
         header: document.querySelector('.firefly-header h1'),
         allLi: document.querySelectorAll('.sidebar li')
     };
+    var dragVars = {
+        dragActive: false,
+        currentX: 0,
+        initialX: 0,
+        xOffset: 0
+    };
     return {
         // dom elements getter
         getDOMelems: function() {
             return domElems;
+        },
+        getDragVars: function() {
+            return dragVars;
         }
     }
 })();
 
 // dynamic split screen related code
 function initDrag() {
-    // handle element flag and position variables
-    var dragActive = false, currentX, initialX, xOffset = 0;
+    // get drag variables
+    const vars = globalVars.getDragVars();
+
+    // create shorthands
+    var dragActive = vars.dragActive;
+        currentX = vars.currentX,
+        initialX = vars.initialX,
+        xOffset = vars.xOffset;
 
     // get target element
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
     var target = elems.container;
 
     window.addEventListener("resize", function() {
         // get DOM elements
-        var elems = DOM.getDOMelems();
+        var elems = globalVars.getDOMelems();
 
-        var w = window.innerWidth;
-        var half = w / 2;
+        var width = window.innerWidth;
+        var half = width / 2;
 
         // handle default position
-        elems.handle.style.left = half + 'px';
-        elems.handle.style.transform = "translate(-50%)";
+        moveHandle(0);
         
         // panels default position
-        elems.left.style.width = half + 'px';
-        elems.right.style.width = (half - 19) + 'px';
+        elems.left.style.width =  elems.handle.style.left;
+        elems.right.style.width = (half - 2) + 'px';
 
-        elems.left.style.zIndex = 1;
+        elems.left.style.zIndex = 2;
         elems.right.style.zIndex = 1;
-
-        currentX = initialX = xOffset = 0;
     });
 
     target.addEventListener("touchstart", dragStart, false);
@@ -97,24 +109,17 @@ function initDrag() {
     target.addEventListener("mouseup", dragEnd, false);
 
     function dragStart(e) {
-        if(e.type === "touchstart"){
-            initialX = e.touches[0].clientX - xOffset;
-        } else {
-            initialX = e.clientX - xOffset;
-        }
-    
         if(e.target === arrows) {
             dragActive = true;
         }
     }
-    
-    function dragEnd() {
-        initialX = currentX;
-    
-        dragActive = false;   
-    }
-    
+      
     function drag(e) {
+        var width = window.innerWidth;
+        var half = width / 2;
+
+        initialX = half;
+
         if(dragActive) {
             e.preventDefault();
     
@@ -126,26 +131,32 @@ function initDrag() {
             
             xOffset = currentX;
     
-            moveHandle(currentX, elems.handle);
+            moveHandle(currentX);
             resizePanels(e, currentX);
         }
     }
+   
+    function dragEnd() {
+        initialX = currentX;
     
+        dragActive = false;   
+    }
+
     // make handle stay after dragging
-    function moveHandle(xPos, el) {
-        el.style.transform = "translate3d(" + xPos + "px, 0, 0)";
+    function moveHandle(xPos) {
+        elems.handle.style.transform = "translate3d(" + xPos + "px, 0, 0)";
     }
 };
 
 function resizePanels(e) {
     // get DOM elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
 
     var w = window.innerWidth;
     var center = w / 2;
 
-    elems.left.style.width = e.clientX + 'px';
-    elems.right.style.width = (w - e.clientX - 19) + 'px';
+    elems.left.style.width = elems.handle.style.left;
+    elems.right.style.width = (w - e.clientX - 10) + 'px';
     
     // make larger section on top
     if(e.clientX > center){
@@ -158,9 +169,9 @@ function resizePanels(e) {
 }
 
 /************* CONTACT ICONS ****************/
-function changeSoc() {
+function changeSocIcons() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
     
     // grab boundary between landing page and typography section
     var typoTop = elems.typo.getBoundingClientRect().top;
@@ -182,7 +193,7 @@ function changeSoc() {
 /************** MENU ICON *****************/
 function changeHamburger() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
 
     // get target element
     var hamb = elems.hamb;
@@ -256,7 +267,7 @@ function changeHamburger() {
 
 function activeLiClick() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
     var li = elems.allLi;
 
     $(li).click(function() {
@@ -266,12 +277,10 @@ function activeLiClick() {
         $(this).not(li[0]).toggleClass('active-2');
     })
 }
-//jQuery version
-
 
 function inactiveLiScroll() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
 
     // get target element
     var typoTop = elems.typo.getBoundingClientRect().top;
@@ -295,7 +304,7 @@ function inactiveLiScroll() {
 
 function activeLiScroll() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
 
     // get height of a section (they are equal)
     var fullH = elems.container.clientHeight;
@@ -338,7 +347,7 @@ function activeLiScroll() {
 /****************** ASIDE CONTACT ********************/
 function changeContact() {
     // grab dom elements
-    var elems = DOM.getDOMelems();
+    var elems = globalVars.getDOMelems();
 
     // get target element color property
     var cont = elems.rotContact;
@@ -363,7 +372,7 @@ function changeContact() {
 function activeOverlay() {
     document.getElementById('hamburger-svg').addEventListener('click', () => {
         // get dom elements
-        var elems = DOM.getDOMelems();
+        var elems = globalVars.getDOMelems();
     
         // create array of elements that will be blurred in animation
         var blurDOMarr = [elems.typo, elems.proto, elems.branding, elems.contact, elems.rotContact, elems.header];
