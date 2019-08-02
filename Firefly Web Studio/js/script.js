@@ -56,13 +56,23 @@ var globalVars = (() => {
         initialX: 0,
         xOffset: 0
     };
+    var colors = {
+        primary: 'var(--deep-sea)',
+        secondary: 'var(--turquoise)',  
+        ternary: 'black'
+    };
     return {
         // dom elements getter
         getDOMelems: function() {
             return domElems;
         },
+        // drag related variables getter
         getDragVars: function() {
             return dragVars;
+        },
+        // colors getter
+        getColors: function() {
+            return colors;
         }
     }
 })();
@@ -116,9 +126,9 @@ function initDrag() {
       
     function drag(e) {
         var width = window.innerWidth;
-        var half = width / 2;
+        var halfW = width / 2;
 
-        initialX = half;
+        initialX = halfW;
 
         if(dragActive) {
             e.preventDefault();
@@ -168,11 +178,18 @@ function resizePanels(e) {
     }
 }
 
-/************* CONTACT ICONS ****************/
+// change contact icons according to scroll position
 function changeSocIcons() {
     // grab dom elements
     var elems = globalVars.getDOMelems();
     
+    // get colors
+    var colors = globalVars.getColors();
+
+    // shorthands
+    var primary = colors.primary;
+    var secondary = colors.secondary;
+
     // grab boundary between landing page and typography section
     var typoTop = elems.typo.getBoundingClientRect().top;
 
@@ -182,89 +199,44 @@ function changeSocIcons() {
     // social icons change color as they pass the boundary
     for (var i = 0; i < icons.length; i++) {
         if (icons[i].getBoundingClientRect().bottom > typoTop) {
-            icons[i].style.color = 'black';
+            icons[i].style.color = primary;
         } else {
-            icons[i].style.color = 'var(--turquoise)';
+            icons[i].style.color = secondary;
         }
     }
 };
 
 
-/************** MENU ICON *****************/
+// change hamburger icon according to scroll position
 function changeHamburger() {
     // grab dom elements
     var elems = globalVars.getDOMelems();
 
+    // get colors
+    var colors = globalVars.getColors();
+
+    // shorthands
+    var primary = colors.primary;
+    var secondary = colors.secondary;
+
     // get target element
     var hamb = elems.hamb;
 
-    // shorthands
-    var docEl = document.documentElement;
-    var docBody = document.body;
+    // vertical scroll amount
+    var y = window.pageYOffset;
 
     // get hamburger height
     var hambH = window.innerHeight - 32; // height of the viewport (= 1 section) - position top of hamburger
 
-    if (docBody.scrollTop || docEl.scrollTop > hambH) {
-        hamb.style.fill = 'var(--deep-sea)';
+    if (y > hambH) {
+        hamb.style.fill = primary;
     } else {
-        hamb.style.fill = 'var(--turquoise)';
+        hamb.style.fill = secondary;
     }
 };
 
 
-/****************** SIDEBAR LIST ITEMS ***********************/
-// var navDOM = document.querySelectorAll('.sidebar li');
-//  $(navDOM).click(function() {
-//     $(navDOM).removeClass('active-2');
-//     $(navDOM).removeClass('active-1');
-//     $(this).filter($(navDOM[0])).toggleClass('active-1');
-//     $(this).not(navDOM[0]).toggleClass('active-2');
-// });
-
-// function activeLiClick() {
-//     // grab dom elements
-//     var elems = DOM.getDOMelems();
-
-//     // get target element
-//     var li = elems.allLi;
-
-//     var liArr = nodeListToArray(li);
-//     var liExceptFirst = liArr.shift();
-
-//     // var liArrExceptFirst = exceptFirst(liArr);
-
-//     // add event listener on each li element
-//     [].forEach.call(li, (el) => {
-//         el.addEventListener('click', () => {
-//             removeClass(li, 'active-2');
-//             removeClass(li, 'active-1');
-//             liArr[0].classList.toggle('active-1');
-//             liExceptFirst.classList.toggle('active-2');
-//         });
-//     });
-// }
-
-// // function removes class from all node list items
-// function removeClass (nodeList, className) {
-//     [].forEach.call(nodeList, function(el) {
-//         el.classList.remove(className);
-//     })
-// }
-
-// function nodeListToArray(nodeList) {
-//     var nodeArray = [];
-//     for (var i = 0; i < nodeList.length; i++) {
-//         nodeArray.push(nodeList[i]);
-//     }
-//     return nodeArray;
-// }
-
-// function exceptFirst(array) {
-//     var nodeArray = array.shift();
-//     return nodeArray;
-// }
-
+// manage nav list items click behavior
 function activeLiClick() {
     // grab dom elements
     var elems = globalVars.getDOMelems();
@@ -278,6 +250,7 @@ function activeLiClick() {
     })
 }
 
+// apply different color to nav list items depending on scroll position
 function inactiveLiScroll() {
     // grab dom elements
     var elems = globalVars.getDOMelems();
@@ -288,7 +261,6 @@ function inactiveLiScroll() {
     // shorthand for sidebar li
     var li = elems.allLi;
 
-    // apply different styling to list items depending on scroll position
     for (var i = 0; i < li.length; i++) {
         if (li[i].getBoundingClientRect().bottom > typoTop) {
             if(!li[i].classList.contains('active-1', 'active-2')) {
@@ -344,72 +316,88 @@ function activeLiScroll() {
 }
 
 
-/****************** ASIDE CONTACT ********************/
+// apply style according to scroll position to rotated contact
 function changeContact() {
     // grab dom elements
     var elems = globalVars.getDOMelems();
+
+    // get colors
+    var colors = globalVars.getColors();
+    var ternary = colors.ternary;
+    var secondary = colors.secondary;
 
     // get target element color property
     var cont = elems.rotContact;
     var halfH = window.innerHeight / 2;
 
-    // get document root node
-    var doc = document.documentElement;
+    // vertical scroll amount
+    var y = window.pageYOffset;
 
-    // get document body
-    var body = document.body;
-
-    if (body.scrollTop || doc.scrollTop > halfH) {
-           cont.style.color = 'black';
+    if (y > halfH) {
+           cont.style.color = ternary;
     }
-    if (body.scrollTop || doc.scrollTop < halfH) {
-           cont.style.color = 'var(--turquoise)';
+    if (y < halfH) {
+           cont.style.color = secondary;
     }
 };
 
 
-/***************** ACTIVATING OVERLAY *********************/
+// handle overlaying side menu
 function activeOverlay() {
-    document.getElementById('hamburger-svg').addEventListener('click', () => {
+    // get dom elements
+    var elems = globalVars.getDOMelems();
+    var hamb = elems.hamb;
+
+    hamb.addEventListener('click', () => {
         // get dom elements
         var elems = globalVars.getDOMelems();
+
+        // shorthands
+        var header = elems.header;
+        var overlay = elems.overlay;
+        var navWrap = elems.navWrap;
+        var socIcons = elems.socIcons;
     
         // create array of elements that will be blurred in animation
         var blurDOMarr = [elems.typo, elems.proto, elems.branding, elems.contact, elems.rotContact, elems.header];
     
         // animation start
-        elems.header.classList.add('translucent');
-        elems.overlay.classList.add('overlay-active');
-        elems.navWrap.classList.add('nav-wrapper-active');
-        elems.socIcons.classList.add('translucent');
+        header.classList.add('translucent');
+        overlay.classList.add('overlay-active');
+        navWrap.classList.add('nav-wrapper-active');
+        socIcons.classList.add('translucent');
 
         for (var i = 0; i < blurDOMarr.length; i++) {
             blurDOMarr[i].classList.add('blurred');
         }
+
         disable_scroll();
     
         // animation end
-        elems.overlay.addEventListener('click', () => {
-            elems.overlay.classList.remove('overlay-active');
-            elems.navWrap.classList.remove('nav-wrapper-active');
-            elems.header.classList.remove('translucent');
-            elems.socIcons.classList.remove('translucent');
+        overlay.addEventListener('click', () => {
+            overlay.classList.remove('overlay-active');
+            navWrap.classList.remove('nav-wrapper-active');
+            header.classList.remove('translucent');
+            socIcons.classList.remove('translucent');
 
             for (var i = 0; i < blurDOMarr.length; i++) {
                 blurDOMarr[i].classList.remove('blurred');
             }
+
             enable_scroll();
         })
     });
 }
 
-/************** PREVENT SCROLL WHEN NAV IS ACTIVE ******************/
+
+// prevent scroll when overlay menu is displayed 
 function wheel(e) {
     preventDefault(e);
 }
 
 function preventDefault(e) {
     e = e || window.event;
+
     if (e.preventDefault)
         e.preventDefault();
     e.returnValue = false;
@@ -417,14 +405,16 @@ function preventDefault(e) {
 
 function disable_scroll() {
     if (window.addEventListener) {
-        window.addEventListener('DOMMouseScroll', wheel, false);
+        window.addEventListener('wheel', wheel, false);
         }
+
     window.onmousewheel = document.onmousewheel = wheel;
 }
 
 function enable_scroll() {
     if (window.removeEventListener) {
-        window.removeEventListener('DOMMouseScroll', wheel, false);
+        window.removeEventListener('wheel', wheel, false);
     }
+    
     window.onmousewheel = document.onmousewheel = document.onkeydown = null;
 }
